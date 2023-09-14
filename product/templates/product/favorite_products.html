@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Избранные продукты</title>
+    <link rel="stylesheet" href="{% static 'product/css/favorite.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</head>
+<body>
+<div class="cart_section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="cart_container">
+                    <div class="cart_title">Избранные товары<small> (Товаров в избранном: {{ favorite_products|length }}) </small>
+                    </div>
+                    {% for product in favorite_products %}
+                        <div class="cart_items">
+                            <ul class="cart_list">
+                                <li class="cart_item clearfix">
+                                    <div class="cart_item_image"><img src="{{ product.main_image.url }}" alt="">
+                                    </div>
+                                    <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
+                                        <div class="cart_item_name cart_info_col">
+                                            <div class="cart_item_title">Название</div>
+                                            <div class="cart_item_text">{{ product.name }}</div>
+                                        </div>
+                                        <div class="cart_item_color cart_info_col">
+                                            <div class="cart_item_title">Описание</div>
+                                            <div class="cart_item_text">
+                                                {% if product.description|length > 6 %}
+                                                    {{ product.description|truncatewords:6 }}...
+                                                {% else %}
+                                                    {{ product.description }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="cart_item_quantity cart_info_col">
+                                            <div class="cart_item_title">Стоимость</div>
+                                            <div class="cart_item_text">{{ product.price }} руб.</div>
+                                        </div>
+                                        <div class="cart_item_price cart_info_col">
+                                            <div class="cart_item_title">Добавить в корзину</div>
+                                            <div class="cart_item_text">
+                                                {% if product.id in request.session.cart %}
+                                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        <a href="{% url 'toggle_cart' product.id %}"
+                                                           class="toggle-cart-link is-in-cart">
+                                                            <img src="{% static 'product/img/tick.png' %}"
+                                                                 alt="Удалить из корзины" class="cart_img_catalog">
+                                                        </a>
+                                                    </form>
+                                                {% else %}
+                                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        <a href="{% url 'toggle_cart' product.id %}"
+                                                           class="toggle-cart-link">
+                                                            <img src="{% static 'product/img/plus.png' %}"
+                                                                 alt="Добавить в корзину" class="cart_img_catalog">
+                                                        </a>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="cart_item_total cart_info_col">
+                                            <div class="cart_item_title">Удалить из избранного</div>
+                                            <div class="cart_item_text">{% if product.id in request.session.favorites %}
+                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <a href="{% url 'toggle_favorite' product.id %}"
+                                                       class="toggle-favorite-link is-favorite">
+                                                        <img src="{% static 'product/img/rab_red.png' %}"
+                                                             alt="Удалить из избранного" class="cart_img_catalog">
+                                                    </a>
+                                                </form>
+                                            {% else %}
+                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <a href="{% url 'toggle_favorite' product.id %}"
+                                                       class="toggle-favorite-link">
+                                                        <img src="{% static 'product/img/heart.png' %}"
+                                                             alt="Добавить в избранное" class="cart_img_catalog">
+                                                    </a>
+                                                </form>
+                                            {% endif %}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                    <div class="cart_buttons">
+                        <a href="{% url 'product_catalog' %}" class="button cart_button_clear">Вернуться на главную</a>
+                        {% if user.is_authenticated %}
+
+                            <a href="{% url 'cart_products' %}" type="button" class="button cart_button_checkout">
+                            Корзина
+                        </a>
+                        {% else %}
+                            <a href="{% url 'user_login' %}" type="button" class="button cart_button_checkout">
+                            Корзина
+                        </a>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

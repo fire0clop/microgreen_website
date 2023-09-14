@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html >
+<html lang="ru">
+<head>
+    <link rel="shortcut icon" href="{% static 'product/img/favicon.png' %}" type="">
+    <title>{{ products.name }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'product/css/bootstrap.css' %}"/>
+    <link href="{% static 'product/css/font-awesome_correct.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'product/css/product_details.css' %}" rel="stylesheet"/>
+</head>
+
+<body class="sub_page">
+
+<div class="hero_area">
+    <div class="bg-box">
+
+    </div>
+    <!-- header section strats -->
+    <header class="header_section">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg custom_nav-container ">
+                <a class="navbar-brand" href="{% url 'main_page' %}">
+            <span>
+              Microgreen
+            </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class=""> </span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav  mx-auto ">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'main_page' %}">Главная</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'product_catalog' %}">Каталог</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="book.html">Book Table</a>
+                        </li>
+
+                    </ul>
+                    <div class="user_option">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'my_account' %}" class="user_link">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'user_login' %}" class="user_link">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                        {% endif %}
+                        <a href="{% url 'favorite_products' %}">
+                            <img class="cart_img_catalog" src="{% static 'product/img/heart.png' %}" alt="">
+                        </a>
+                        <a class="cart_link" href="{% url 'cart_products' %}">
+                            <img class="cart_img_catalog" src="{% static 'product/img/cart.png' %}" alt="">
+                        </a>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+    </header>
+</div>
+
+<!-- food section -->
+
+<section class="food_section layout_padding">
+    <div class="heading_container heading_center">
+        <h2>
+            Наш каталог
+        </h2>
+    </div>
+    <br><br>
+
+
+    <div class="content_detail">
+        <div class="left">
+            <div class="main-image">
+                <img src="{{ products.main_image.url }}" alt="Main Image">
+                <div class="small-images">
+                    <img src="{{ products.main_image.url }}" alt="Main Image">
+                    {% for image in products.images.all %}
+                        {% if image.image %}
+                            <img src="{{ image.image.url }}">
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="prev-arrow">
+                        <div class="arrow-image" data-index="left"></div>
+                    </div>
+                    <div class="next-arrow">
+                        <div class="arrow-image" data-index="right"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="product-info">
+                <h1 class="product-title">{{ products.name }}</h1>
+                <p class="product-price">₽ {{ products.price }}/{{ products.weight }}</p>
+                <p class="product-description">
+                    {{ products.description }}
+                </p>
+            </div>
+            <div class="product-actions">
+                <div class='favorites-link'>
+                    {% if products.id in request.session.favorites %}
+                        <form action="{% url 'toggle_favorite' products.id %}" method="post">
+                            {% csrf_token %}
+                            <a href="{% url 'toggle_favorite' products.id %}"
+                               class="toggle-favorite-link is-favorite">
+                                <img src="{% static 'product/img/rab_white.png' %}"
+                                     alt="Удалить из избранного" class="cart_img_catalog">
+                            </a>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'toggle_favorite' products.id %}" method="post">
+                            {% csrf_token %}
+                            <a href="{% url 'toggle_favorite' products.id %}"
+                               class="toggle-favorite-link">
+                                <img src="{% static 'product/img/heart.png' %}"
+                                     alt="Добавить в избранное" class="cart_img_catalog">
+                            </a>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="cart-link">
+                    {% if products.id in request.session.cart %}
+                        <form action="{% url 'toggle_cart' products.id %}" method="post">
+                            {% csrf_token %}
+                            <a href="{% url 'toggle_cart' products.id %}"
+                               class="toggle-cart-link is-in-cart">
+                                <img src="{% static 'product/img/rab_red.png' %}"
+                                     alt="Удалить из корзины" class="cart_img_catalog">
+                            </a>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'toggle_cart' products.id %}" method="post">
+                            {% csrf_token %}
+                            <a href="{% url 'toggle_cart' products.id %}"
+                               class="toggle-cart-link">
+                                <img src="{% static 'product/img/cart.png' %}"
+                                     alt="Добавить в корзину" class="cart_img_catalog">
+                            </a>
+                        </form>
+                    {% endif %}
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<br><br><br><br><br><br><br>
+
+
+<!-- end food section -->
+
+<!-- footer section -->
+<footer class="footer_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        Наши контакты
+                    </h4>
+                    <div class="contact_link_box">
+
+                        <a href="">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                  Телефон: +7(922)469-31-19
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                  i.v.fomenko@inbox.ru
+                </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <div class="footer_detail">
+                    <a href="" class="footer-logo">
+                        Microgreen
+                    </a>
+                    <p>
+                        Какое-нибудь описание для компании
+                    </p>
+                    <div class="footer_social">
+                        <a href="">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-pinterest" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <h4>
+                    Рабочие часы
+                </h4>
+                <p>
+                    Каждый день
+                </p>
+                <p>
+                    10:00 - 22:00
+                </p>
+            </div>
+        </div>
+
+    </div>
+</footer>
+<script src="{% static 'product/js/scripts.js' %}"></script>
+<script src="{% static 'product/js/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'product/js/bootstrap.js' %}"></script>
+</body>
+</html>

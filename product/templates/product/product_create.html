@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание продукта</title>
+</head>
+<body>
+  <h2>Create a New Product</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="file" name="images" id="imageInput" multiple>
+  <div id="imagePreview"></div>
+  <input type="submit" value="Создать продукт">
+</form>
+  <br><br><br><br>
+  <a href="{% url 'product_list' %}">Вернуться к списку продуктов</a>
+
+<script>
+  const imageInput = document.getElementById('imageInput');
+  const imagePreview = document.getElementById('imagePreview');
+
+  imageInput.addEventListener('change', function () {
+    imagePreview.innerHTML = '';
+    Array.from(this.files).forEach(file => {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      img.style.maxWidth = '200px'; // Опциональное ограничение размера
+      imagePreview.appendChild(img);
+    });
+  });
+</script>
+</body>
+</html>

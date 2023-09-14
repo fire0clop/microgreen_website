@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        List Product
+    </title>
+    <link rel="stylesheet" href="{% static 'product/css/list_product.css' %}">
+</head>
+<body>
+<form method="GET" action="{% url 'product_list' %}">
+    <input type="text" name="search" placeholder="Поиск по названиям">
+    <button type="submit">Search</button>
+</form>
+<br>
+<button type="button"><a href="{% url 'product_create' %}">Создать новый продукт</a></button>
+<br>
+<h1 style="text-align: center">Список всех товаров</h1>
+
+{% if products %}
+    <div class="parent_div">
+        {% for product in products %}
+            <div class="dauter_div">
+                <p>{{ forloop.counter }}.Наименование:
+                    <a class="name_dauter" href="{% url 'product_detail' pk=product.pk %}">{{ product.name }}</a></p>
+                <p class="class_dauter">Категория: {{ product.category.name }}</p>
+                <a href="{% url 'product_update' pk=product.pk %}">Редактировать продукт</a>
+                <br>
+                <a href="{% url 'product_delete' pk=product.pk %}">Удалить продукт</a>
+                <br><br>
+                {% if product.main_image %}
+                    <img width="100" src="{{ product.main_image.url }}">
+                {% endif %}
+
+
+            </div>
+
+        {% endfor %}
+    </div>
+
+{% else %}
+    <h3>Продукты не найдены</h3>
+{% endif %}
+<br><br><br><br>
+<a href="{% url 'main_page' %}">На главную страницу</a>
+<br>
+<a href="{% url 'my_account' %}">Личный кабинет</a>
+
+</body>
+</html>

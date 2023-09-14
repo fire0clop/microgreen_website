@@ -1,0 +1,24 @@
+.parent_div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 80%;
+  margin: auto;
+}
+
+.dauter_div {
+  flex: 0 0 calc(33.333% - 20px);
+  box-sizing: border-box;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 20px;
+  text-align: center;
+}
+.name_dauter{
+  font-size: 20px;
+  font-weight: bold;
+}
+.class_dauter{
+  font-style: italic;
+  font-size: 10px;
+}

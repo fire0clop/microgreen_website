@@ -1,0 +1,37 @@
+
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="ru" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Вход в личный кабинет</title>
+    <link rel="stylesheet" href="{% static 'myaccount/css/login_user.css' %}">
+</head>
+<body>
+<div class="wrapper">
+    <div class="title">
+        Форма входа
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="field">
+            <input type="text" id="id_username" name="username" required>
+            <label>Имя пользователя</label>
+        </div>
+        <div class="field">
+            <input type="password" id="id_password" name="password" required>
+            <label>Пароль</label>
+        </div>
+        <div class="field">
+            <input type="submit" value="Вход">
+        </div>
+        <div class="signup-link">
+            Нет аккаунта?
+            <br>
+            <a href="{% url 'user_create' %}">Зарегистрируйтесь здесь</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

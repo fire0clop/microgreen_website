@@ -1,0 +1,16 @@
+{% extends 'myaccount/base.html' %}
+{% block title %}
+    Details Info
+{% endblock %}
+{% block body %}
+    <h3>Details Info</h3>
+    <div>
+        <p>Username: {{ users.user.username }}</p>
+        <p>Email: {{ users.email }}</p>
+        <p>Telephone: {{ users.phone }}</p>
+    </div>
+    <br><br>
+    <a href="{% url 'user_list' %}">Link to List</a>
+    <br><br>
+    <a href="{% url 'user_update' pk=users.pk %}">Link to update</a>
+{% endblock %}

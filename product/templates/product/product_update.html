@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование продукта</title>
+</head>
+<body>
+<h1>Стандартные поля продукта</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <!-- Добавьте поле для загрузки дополнительных изображений -->
+
+    <label for="{{ product_image_form.image.id_for_label }}">Добавить новое дополнительное изображение</label>
+    {{ product_image_form.image }}
+    <button type="submit" name="add_image" style="display: none;">Сохранить картинку</button>
+
+    <h3>Уже загруженные картинки</h3>
+    <ul>
+        {% for image in product_images %}
+            <li>
+                {% if image.image %}
+                    <img src="{{ image.image.url }}" alt="{{ image.product.name }}" width="100">
+                    <a href="{% url 'delete_image' image.pk %}">Удалить</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <button type="submit" name="update_product">Сохранить изменения</button>
+</form>
+
+<script>
+  const imageInput = document.querySelector("input[name='image']"); // Используйте name поля загрузки изображения
+  const addImageButton = document.querySelector("button[name='add_image']");
+
+  imageInput.addEventListener("change", function () {
+    if (this.files.length > 0) {
+      addImageButton.style.display = "block";
+    } else {
+      addImageButton.style.display = "none";
+    }
+  });
+
+  // Проверьте при загрузке страницы (например, если изображение уже выбрано при редактировании)
+  if (imageInput.files.length > 0) {
+    addImageButton.style.display = "block";
+  }
+</script>
+</body>
+</html>

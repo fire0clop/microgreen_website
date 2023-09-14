@@ -1,0 +1,137 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Личный кабинет</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+    <link href="{% static 'myaccount/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'myaccount/css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+<i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+<header id="header">
+    <div class="d-flex flex-column">
+        <div class="profile">
+            <img src="{% static 'myaccount/img/profile-img.jpg' %}" alt="" class="img-fluid rounded-circle">
+            <h1 class="text-light"><a href="{% url 'main_page' %}">{{ user.username }}</a></h1>
+        </div>
+        <nav id="navbar" class="nav-menu navbar">
+            <ul>
+                {% if user.is_authenticated and user.is_staff %}
+                    <li><a href="{% url 'main_page' %}" class="nav-link scrollto active"><i class="bx bx-home"></i>
+                        <span>Главная</span></a>
+                    </li>
+                    <li><a href="{% url 'product_list' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Работа с продуктами</span></a>
+                    </li>
+                    <li><a href="{% url 'product_list' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Новые заказы</span></a>
+                    </li>
+                    <li><a href="{% url 'product_list' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Заказы в работе</span></a>
+                    </li>
+                    <li><a href="{% url 'product_list' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Завершенные заказы</span></a>
+                    </li>
+                    <li><a href="{% url 'user_logout' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Выйти</span></a>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'main_page' %}" class="nav-link scrollto active"><i class="bx bx-home"></i>
+                        <span>Главная</span></a>
+                    </li>
+                    <li><a href="{% url 'favorite_products' %}" class="nav-link scrollto"><i class="bx bx-user"></i>
+                        <span>Избранное</span></a>
+                    </li>
+                    <li><a href="{% url 'cart_products' %}" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
+                        <span>Корзина</span></a></li>
+                    <li><a href="#about" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Активные заказы</span></a>
+                    </li>
+                    <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-server"></i>
+                        <span>История заказов</span></a></li>
+                    <li><a href="{% url 'user_logout' %}" class="nav-link scrollto"><i class="bx bx-server"></i>
+                        <span>Выйти</span></a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</header>
+<section id="hero" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="hero-container" data-aos="fade-in">
+        <h1>Добро пожаловать в личный кабинет</h1>
+        <p>Здесь вы сможете <span class="typed"
+                                  data-typed-items=" просматривать историю заказов, отслеживать состояние текущего заказа, связаться с нами, узнать информацию об оплате и доставке"></span>
+        </p>
+    </div>
+</section>
+
+<main id="main">
+    {% if user.is_authenticated and user.is_staff %}
+
+    {% else %}
+
+        <section id="about" class="about">
+        {% if active_orders %}
+        	<div class="container">
+
+                <div class="section-title">
+                    <h2>Активные заказы</h2>
+
+                    <div class="order-columns">
+                        {% for order in active_orders %}
+                            <div class='active_box'>
+                                <h5>Заказ номер: {{ order.id }}</h5>
+                                <p>Название компании - <em>{{ order.company_name }}</em></p>
+                                <p>Доставка к - <em>{{ order.delivery_date }}</em></p>
+                                <p>Статус заказа - <em>{{ order.status.name }}</em></p>
+                                <hr>
+                                <h6>Корзина:</h6>
+                                {% for item in order.items.all %}
+                                    <p>{{ item.product.name }} - {{ item.quantity }}/шт.
+                                        --- ({{ item.get_total_price }} руб.)
+                                    </p>
+                                {% endfor %}
+                                <hr>
+                                <p>Итоговая стоимость заказа: {{ order.items.all|total_price }} руб.</p>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        </section>
+        <section id="resume" class="resume">
+        {% if completed_orders %}
+        	<div class="container">
+
+                <div class="section-title">
+                    <h2>История заказов</h2>
+
+                    <div class="order-columns">
+                        {% for order in completed_orders %}
+                            <div class='active_box'>
+                                <h5>Заказ номер: {{ order.id }}</h5>
+                                <p>Название компании - <em>{{ order.company_name }}</em></p>
+                                <p>Доставка к - <em>{{ order.delivery_date }}</em></p>
+                                <p>Статус заказа - <em>{{ order.status.name }}</em></p>
+                                <hr>
+                                <h6>Корзина:</h6>
+                                {% for item in order.items.all %}
+                                    <p>{{ item.product.name }} - {{ item.quantity }}/шт.
+                                        --- ({{ item.get_total_price }} руб.)
+                                    </p>
+                                {% endfor %}
+                                <hr>
+                                <p>Итоговая стоимость заказа: {{ order.items.all|total_price }} руб.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        </section>
+    {% endif %}
+</main>
+<script src="{% static 'myaccount/vendor/typed.js/typed.umd.js' %}"></script>
+<script src="{% static 'myaccount/js/main.js' %}"></script>
+</body>
+</html>

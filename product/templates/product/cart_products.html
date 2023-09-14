@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="{% static 'product/css/cart.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <div class="card">
+
+            <div class="row">
+
+                <div class="col-md-8 cart">
+
+                    <div class="title">
+                        <div class="row">
+                            <div class="col"><h4><b>Корзина</b></h4></div>
+                            <div class="col align-self-center text-right text-muted">Количество товаров в
+                                корзине: {{ cart_products|length }}</div>
+                        </div>
+                    </div>
+
+
+
+                    {% for product in cart_products %}
+                        <div class="row border-top border-bottom">
+                            <div class="row main align-items-center">
+                                <div class="col-2"><img class="img-fluid" src="{{ product.main_image.url }}"></div>
+                                <div class="col">
+                                    <div class="row text-muted">{{ product.category }}</div>
+                                    <div class="row">{{ product.name }}</div>
+                                </div>
+                                <div class="col">
+                                    <input type="number" name="quantity_{{ product.id }}" class="counter-input" min="1"
+                                           value="1"
+                                           id="quantity_{{ product.id }}">
+                                </div>
+                                <div class="col">₽ {{ product.price }}</div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+                <div class="col-md-4 summary">
+                    <div><h5><b>Доплонительная информация</b></h5></div>
+                    <hr>
+                    <p>Название компании:</p>
+                    <div class="col">
+                        <input type="text" name="company_name" placeholder="Введите название организации">
+                    </div>
+                    <br>
+                    <p>Дата дотавки:</p>
+                    <div class="col">
+                        <input type="date" name="delivery_date">
+                    </div>
+                    <br>
+                    <div class="col">
+                        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                            <div class="col">Итоговая стоимость</div>
+                            <div class="col text-right">
+                                <p>0 руб.</p>
+                            </div>
+                        </div>
+                        <button style="background-color: white;padding: 10px; border-radius: 20px" lass="btn">Отправить
+                            заказ
+                        </button>
+                    </div>
+                    <div class="back-to-shop"><a href="{% url 'main_page' %}">&leftarrow;</a><span class="text-muted">Вернуться в магазин</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>

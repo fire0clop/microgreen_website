@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title> Регистрация</title>
+    <link rel="stylesheet" href="{% static 'myaccount/css/create_user.css' %}">
+</head>
+<body>
+<div class="container">
+    <div class="title">Форма Регистрации</div>
+    <div class="content">
+        <form method="post">
+            {% csrf_token %}
+            <div class="user-details">
+
+                <div class="input-box">
+                    <span class="details">Имя пользователя</span>
+                    {{ form.username }}
+                </div>
+
+                <div class="input-box">
+                    <span class="details">Название организации</span>
+                    {{ form.company_name }}
+                </div>
+
+                <div class="input-box">
+                    <span class="details">Пароль</span>
+                    {{ form.password1 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Повторите пароль</span>
+                    {{ form.password2 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Номер телефона</span>
+                    {{ form.phone }}
+                </div>
+            </div>
+            <div class="button">
+                <input type="submit" value="Регистрация">
+            </div>
+            <div class="back-to-shop"><a href="{% url 'main_page' %}">&leftarrow;<span class="text-muted">Вернуться в магазин</span></a>
+                    </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

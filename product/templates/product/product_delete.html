@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Удалиление продукта</title>
+</head>
+<body>
+<h3>Вы действительно хотите удалить продукт {{ product.name }}?</h3>
+<a href="{% url 'product_list' %}">Вернуться к списку продуктов</a>
+<br><br><br><br>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Хочу удалить продукт</button>
+</form>
+</body>
+</html>
