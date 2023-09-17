@@ -1,5 +1,5 @@
 module.exports = {
-  content: ['/home/paladin/PycharmProjects/djangoProject/myaccount/templates/myaccount/login.html'],
-  css: ['/home/paladin/PycharmProjects/djangoProject/myaccount/static/myaccount/css/style.css'],
-  output: '/home/paladin/PycharmProjects/djangoProject/myaccount/static/myaccount/css/login_user.css'
+  content: ['/home/paladin/PycharmProjects/djangoProject/product/templates/product/main_page.html'],
+  css: ['/home/paladin/PycharmProjects/djangoProject/product/static/product/css/fstyle_correct.css'],
+  output: '/home/paladin/PycharmProjects/djangoProject/product/static/product/css/main_page.css'
 };

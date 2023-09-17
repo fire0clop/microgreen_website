@@ -10,3 +10,7 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'company_name', 'phone', 'password1', 'password2']
+
+class ChangeOrderStatusForm(forms.Form):
+    order_id = forms.IntegerField()
+    new_status = forms.IntegerField()

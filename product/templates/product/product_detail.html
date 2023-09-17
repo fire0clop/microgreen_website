@@ -40,15 +40,17 @@
                             <a class="nav-link" href="{% url 'product_catalog' %}">Каталог</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="about.html">About</a>
+                            <a class="nav-link" href="{% url 'main_page' %}#about_inform">Сотрудничество</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="book.html">Book Table</a>
-                        </li>
+
 
                     </ul>
                     <div class="user_option">
-                        {% if user.is_authenticated %}
+                        {% if user.is_authenticated and user.is_staff %}
+                            <a href="{% url 'admin_account' %}" class="user_link">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                        {% elif user.is_authenticated %}
                             <a href="{% url 'my_account' %}" class="user_link">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                             </a>
@@ -57,12 +59,19 @@
                                 <i class="fa fa-user" aria-hidden="true"></i>
                             </a>
                         {% endif %}
+
                         <a href="{% url 'favorite_products' %}">
                             <img class="cart_img_catalog" src="{% static 'product/img/heart.png' %}" alt="">
                         </a>
-                        <a class="cart_link" href="{% url 'cart_products' %}">
-                            <img class="cart_img_catalog" src="{% static 'product/img/cart.png' %}" alt="">
-                        </a>
+                        {% if user.is_authenticated %}
+                            <a class="cart_link" href="{% url 'cart_products' %}">
+                                <img class="cart_img_catalog" src="{% static 'product/img/cart.png' %}" alt="">
+                            </a>
+                        {% else %}
+                            <a class="cart_link" href="{% url 'user_login' %}">
+                                <img class="cart_img_catalog" src="{% static 'product/img/cart.png' %}" alt="">
+                            </a>
+                        {% endif %}
                     </div>
 
                 </div>

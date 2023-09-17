@@ -12,6 +12,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: #272829;
+
 }
 
 a {
@@ -79,7 +80,7 @@ h6 {
   z-index: 9997;
   transition: all 0.5s;
   padding: 0 15px;
-  background: #040b14;
+  background: #222831;
   overflow-y: auto;
 }
 
@@ -87,7 +88,6 @@ h6 {
   margin: 15px auto;
   display: block;
   width: 120px;
-  border: 8px solid #2c2f3f;
 }
 
 #header .profile h1 {
@@ -243,7 +243,7 @@ h6 {
   font-size: 24px;
   transition: all 0.4s;
   outline: none !important;
-  background-color: #149ddd;
+  background-color: #222831;
   color: #fff;
   width: 40px;
   height: 40px;
@@ -287,7 +287,8 @@ h6 {
 #hero .hero-container {
   position: relative;
   z-index: 2;
-  min-width: 300px;
+  width: 60%;
+  margin-left: 100px;
 }
 
 #hero h1 {
@@ -1111,7 +1112,7 @@ section {
   bottom: 0;
   width: 300px;
   z-index: 9999;
-  background: #040b14;
+  background: #222831;
 }
 
 #footer .copyright {
@@ -1131,4 +1132,32 @@ section {
     width: auto;
     padding-right: 20px 15px;
   }
+}
+/* Стиль для всей таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto; /* Центрирование таблицы по горизонтали */
+}
+
+/* Стиль для заголовков таблицы */
+th, td {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+}
+
+/* Стиль для строк с атрибутом data-status="1" (желтый фон) */
+tr[data-status="1"] {
+    background-color: yellow;
+}
+
+/* Стиль для строк с атрибутом data-status="2" (зеленый фон) */
+tr[data-status="2"] {
+    background-color: green;
+}
+
+/* Стиль для строк с атрибутом data-status="3" (серый фон) */
+tr[data-status="3"] {
+    background-color: gray;
 }

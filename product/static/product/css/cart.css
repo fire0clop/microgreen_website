@@ -74,6 +74,10 @@ body{
 a{
     padding: 0 1vh;
 }
+.cart_img_catalog{
+  width: 20px;
+  height: 20px;
+}
 .close{
     margin-left: auto;
     font-size: 0.7rem;

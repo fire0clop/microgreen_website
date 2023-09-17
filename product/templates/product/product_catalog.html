@@ -7,7 +7,6 @@
     <link rel="shortcut icon" href="{% static 'product/img/favicon.png' %}" type="">
     <title> Microgreen </title>
     <link rel="stylesheet" type="text/css" href="{% static 'product/css/bootstrap.css' %}"/>
-{#    <link href="{% static 'product/css/style.css' %}" rel="stylesheet"/>#}
     <link rel="stylesheet" href="{% static 'product/css/product_catalog.css' %}">
 
 
@@ -44,15 +43,16 @@
                             <a class="nav-link" href="{% url 'product_catalog' %}">Каталог</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="about.html">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="book.html">Book Table</a>
+                            <a class="nav-link" href="{% url 'main_page' %}#about_inform">Сотрудничество</a>
                         </li>
 
                     </ul>
                     <div class="user_option">
-                        {% if user.is_authenticated %}
+                        {% if user.is_authenticated and user.is_staff %}
+                            <a href="{% url 'admin_account' %}" class="user_link">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                        {% elif user.is_authenticated %}
                             <a href="{% url 'my_account' %}" class="user_link">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                             </a>
@@ -64,9 +64,15 @@
                         <a href="{% url 'favorite_products' %}">
                             <img class="cart_img_catalog" src="{% static 'product/img/heart.png' %}" alt="">
                         </a>
-                        <a class="cart_link" href="{% url 'cart_products' %}">
-                            <img class="cart_img_catalog" src="{% static 'product/img/cart.png' %}" alt="">
-                        </a>
+                        {% if user.is_authenticated %}
+                            <a class="cart_link" href="{% url 'cart_products' %}">
+                                <img class="cart_img_catalog" src="{% static 'product/img/cart.png' %}" alt="">
+                            </a>
+                        {% else %}
+                            <a class="cart_link" href="{% url 'user_login' %}">
+                                <img class="cart_img_catalog" src="{% static 'product/img/cart.png' %}" alt="">
+                            </a>
+                        {% endif %}
                     </div>
 
                 </div>
@@ -125,7 +131,8 @@
                                                 <form action="{% url 'toggle_favorite' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite">
+                                                       class="toggle-favorite-link is-favorite"
+                                                       data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/rab_white.png' %}"
                                                              alt="Удалить из избранного" class="cart_img_catalog">
                                                     </a>
@@ -134,7 +141,7 @@
                                                 <form action="{% url 'toggle_favorite' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link">
+                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/heart.png' %}"
                                                              alt="Добавить в избранное" class="cart_img_catalog">
                                                     </a>
@@ -144,7 +151,7 @@
                                                 <form action="{% url 'toggle_cart' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart">
+                                                       class="toggle-cart-link is-in-cart" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/rab_red.png' %}"
                                                              alt="Удалить из корзины" class="cart_img_catalog">
                                                     </a>
@@ -153,7 +160,7 @@
                                                 <form action="{% url 'toggle_cart' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link">
+                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/cart.png' %}"
                                                              alt="Добавить в корзину" class="cart_img_catalog">
                                                     </a>
@@ -190,7 +197,7 @@
                                                 <form action="{% url 'toggle_favorite' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite">
+                                                       class="toggle-favorite-link is-favorite" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/rab_white.png' %}"
                                                              alt="Удалить из избранного" class="cart_img_catalog">
                                                     </a>
@@ -199,7 +206,7 @@
                                                 <form action="{% url 'toggle_favorite' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link">
+                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/heart.png' %}"
                                                              alt="Добавить в избранное" class="cart_img_catalog">
                                                     </a>
@@ -209,7 +216,7 @@
                                                 <form action="{% url 'toggle_cart' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart">
+                                                       class="toggle-cart-link is-in-cart" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/rab_red.png' %}"
                                                              alt="Удалить из корзины" class="cart_img_catalog">
                                                     </a>
@@ -218,7 +225,7 @@
                                                 <form action="{% url 'toggle_cart' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link">
+                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/cart.png' %}"
                                                              alt="Добавить в корзину" class="cart_img_catalog">
                                                     </a>
@@ -254,7 +261,7 @@
                                                 <form action="{% url 'toggle_favorite' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite">
+                                                       class="toggle-favorite-link is-favorite" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/rab_white.png' %}"
                                                              alt="Удалить из избранного" class="cart_img_catalog">
                                                     </a>
@@ -263,7 +270,7 @@
                                                 <form action="{% url 'toggle_favorite' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link">
+                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/heart.png' %}"
                                                              alt="Добавить в избранное" class="cart_img_catalog">
                                                     </a>
@@ -273,7 +280,7 @@
                                                 <form action="{% url 'toggle_cart' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart">
+                                                       class="toggle-cart-link is-in-cart" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/rab_red.png' %}"
                                                              alt="Удалить из корзины" class="cart_img_catalog">
                                                     </a>
@@ -282,7 +289,7 @@
                                                 <form action="{% url 'toggle_cart' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link">
+                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/cart.png' %}"
                                                              alt="Добавить в корзину" class="cart_img_catalog">
                                                     </a>
@@ -318,7 +325,7 @@
                                                 <form action="{% url 'toggle_favorite' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite">
+                                                       class="toggle-favorite-link is-favorite" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/rab_white.png' %}"
                                                              alt="Удалить из избранного" class="cart_img_catalog">
                                                     </a>
@@ -327,7 +334,7 @@
                                                 <form action="{% url 'toggle_favorite' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link">
+                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/heart.png' %}"
                                                              alt="Добавить в избранное" class="cart_img_catalog">
                                                     </a>
@@ -337,7 +344,7 @@
                                                 <form action="{% url 'toggle_cart' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart">
+                                                       class="toggle-cart-link is-in-cart" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/rab_red.png' %}"
                                                              alt="Удалить из корзины" class="cart_img_catalog">
                                                     </a>
@@ -346,7 +353,7 @@
                                                 <form action="{% url 'toggle_cart' product.id %}" method="post">
                                                     {% csrf_token %}
                                                     <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link">
+                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
                                                         <img src="{% static 'product/img/cart.png' %}"
                                                              alt="Добавить в корзину" class="cart_img_catalog">
                                                     </a>
@@ -435,9 +442,55 @@
     </div>
     </div>
 </footer>
-<script src="{% static 'product/js/jquery-3.4.1.min.js' %}"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <script src="{% static 'product/js/bootstrap.js' %}"></script>
 <script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
 <script src="{% static 'product/js/custom.js' %}"></script>
+<script>
+    // Обработчик щелчка по кнопке "Добавить в избранное"
+    document.querySelectorAll('.toggle-favorite-link').forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            const product_id = link.getAttribute('data-product-id');
+            saveScrollPosition();
+            scrollToProduct(product_id);
+        });
+    });
+
+    // Обработчик щелчка по кнопке "Добавить в корзину"
+    document.querySelectorAll('.toggle-cart-link').forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            const product_id = link.getAttribute('data-product-id');
+            saveScrollPosition();
+            scrollToProduct(product_id);
+        });
+    });
+
+    // Восстанавливаем положение прокрутки при загрузке страницы
+    window.addEventListener('load', function() {
+        const scrollPosition = sessionStorage.getItem('scroll_position');
+        if (scrollPosition !== null) {
+            window.scrollTo(0, parseInt(scrollPosition));
+        }
+    });
+
+    // Функция для сохранения текущего положения прокрутки
+    function saveScrollPosition() {
+        const scrollY = window.scrollY;
+        sessionStorage.setItem('scroll_position', scrollY);
+    }
+
+    // Функция для восстановления положения прокрутки до определенного товара
+    function scrollToProduct(product_id) {
+        const productElement = document.querySelector(`[data-product-id="${product_id}"]`);
+        if (productElement !== null) {
+            const scrollY = productElement.offsetTop;
+            window.scrollTo(0, scrollY);
+        }
+    }
+</script>
+
 </body>
 </html>

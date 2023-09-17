@@ -8,7 +8,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.ForeignKey(Status, default='1', on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now_add=True)
-    company_name = models.CharField(max_length=100)
+    comment = models.CharField(max_length=100, null=True, blank=True)
     delivery_date = models.DateField()
 
     def __str__(self):

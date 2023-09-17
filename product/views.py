@@ -22,7 +22,7 @@ def toggle_favorite(request, product_id):
 
     # Получите список избранных продуктов из сессии (если есть)
     favorites = request.session.get('favorites', [])
-    print(favorites)
+
 
     if product_id in favorites:
         # Если продукт уже в избранном, удалите его
@@ -35,6 +35,8 @@ def toggle_favorite(request, product_id):
 
     # Обновите список избранных продуктов в сессии
     request.session['favorites'] = favorites
+    request.session['scroll_position'] = request.POST.get('scroll_position', '0')
+
 
     # Вернитесь на предыдущую страницу
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
@@ -61,7 +63,7 @@ def toggle_cart(request, product_id):
 
     # Получите список товаров в корзине из сессии (если есть)
     cart = request.session.get('cart', [])
-    print(cart)
+
 
     if product_id in cart:
         # Если товар уже в корзине, удалите его
@@ -74,23 +76,23 @@ def toggle_cart(request, product_id):
 
     # Обновите список товаров в корзине в сессии
     request.session['cart'] = cart
-
+    request.session['scroll_position'] = request.POST.get('scroll_position', '0')
     # Вернитесь на предыдущую страницу
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 @login_required
 def cart_products(request):
     if request.method == 'POST':
         # Получите данные из формы
-        company_name = request.POST.get('company_name')
+        comment = request.POST.get('comment')
         delivery_date = request.POST.get('delivery_date')
         user = request.user  # Текущий пользователь
-        print(user)
+
         status = Status.objects.get(id=1)  # Замените на соответствующий статус
 
         # Создайте новый заказ
         order = Order.objects.create(
             user=user,
-            company_name=company_name,
+            comment=comment,
             delivery_date=delivery_date,
             status=status
         )

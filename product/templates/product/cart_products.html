@@ -17,11 +17,8 @@
     <form method="post">
         {% csrf_token %}
         <div class="card">
-
             <div class="row">
-
                 <div class="col-md-8 cart">
-
                     <div class="title">
                         <div class="row">
                             <div class="col"><h4><b>Корзина</b></h4></div>
@@ -29,8 +26,6 @@
                                 корзине: {{ cart_products|length }}</div>
                         </div>
                     </div>
-
-
 
                     {% for product in cart_products %}
                         <div class="row border-top border-bottom">
@@ -40,15 +35,57 @@
                                     <div class="row text-muted">{{ product.category }}</div>
                                     <div class="row">{{ product.name }}</div>
                                 </div>
-                                <div class="col">
+                                <div class="col-3">
                                     <input type="number" name="quantity_{{ product.id }}" class="counter-input" min="1"
                                            value="1"
                                            id="quantity_{{ product.id }}">
                                 </div>
-                                <div class="col">₽ {{ product.price }}</div>
 
+                                <div class="col"><p class="productResult" id="result_{{ product.id }}">0₽</p></div>
+                            <div class="col">
+                                {% if product.id in request.session.cart %}
+                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_cart' product.id %}"
+                                           class="toggle-cart-link is-in-cart">
+                                            <img src="{% static 'product/img/rab_red.png' %}"
+                                                 alt="Удалить из корзины" class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% else %}
+                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_cart' product.id %}"
+                                           class="toggle-cart-link">
+                                            <img src="{% static 'product/img/cart.png' %}"
+                                                 alt="Добавить в корзину" class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% endif %}</div>
                             </div>
                         </div>
+                        <script>
+                            // Функция для обновления результата
+                            function updateResult{{ product.id }}() {
+                                // Получаем значение из поля ввода и выполняем арифметические операции
+                                const inputValue{{ product.id }} = parseFloat(inputNumber{{ product.id }}.value);
+                                const result{{ product.id }} = inputValue{{ product.id }} * {{ product.price }};
+
+                                // Отображаем результат на странице
+                                const resultElement{{ product.id }} = document.getElementById('result_{{ product.id }}');
+                                resultElement{{ product.id }}.textContent = `${result{{ product.id }}}₽`;
+
+                                // Вызываем функцию для обновления итоговой стоимости
+                                updateTotalCost();
+                            }
+
+                            // Добавляем слушатель события input на поле ввода
+                            const inputNumber{{ product.id }} = document.getElementById('quantity_{{ product.id }}');
+                            inputNumber{{ product.id }}.addEventListener('input', updateResult{{ product.id }});
+
+                            // Вызываем функцию для обновления результата при загрузке страницы
+                            updateResult{{ product.id }}();
+                        </script>
                     {% endfor %}
 
 
@@ -56,9 +93,9 @@
                 <div class="col-md-4 summary">
                     <div><h5><b>Доплонительная информация</b></h5></div>
                     <hr>
-                    <p>Название компании:</p>
+                    <p>Дополнительные комментарии:</p>
                     <div class="col">
-                        <input type="text" name="company_name" placeholder="Введите название организации">
+                        <input type="text" name="comment" placeholder="Комментарии к заказу">
                     </div>
                     <br>
                     <p>Дата дотавки:</p>
@@ -70,7 +107,7 @@
                         <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                             <div class="col">Итоговая стоимость</div>
                             <div class="col text-right">
-                                <p>0 руб.</p>
+                                <p id="totalCost">0 руб.</p>
                             </div>
                         </div>
                         <button style="background-color: white;padding: 10px; border-radius: 20px" lass="btn">Отправить
@@ -85,6 +122,27 @@
     </form>
 </div>
 
+<script>
+    function updateTotalCost() {
+        let totalCost = 0;
+
+        // Итерируемся по всем продуктам и суммируем их промежуточные итоги
+        const productResults = document.querySelectorAll('.productResult');
+        productResults.forEach((element) => {
+            const result = parseFloat(element.textContent.replace('Итог: ', '').replace('₽', ''));
+            if (!isNaN(result)) {
+                totalCost += result;
+            }
+        });
+
+        // Отображаем обновленную итоговую стоимость
+        const totalCostElement = document.getElementById('totalCost');
+        totalCostElement.textContent = `${totalCost} руб.`;
+    }
+
+    // Вызываем функцию для обновления итоговой стоимости при загрузке страницы
+    updateTotalCost();
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

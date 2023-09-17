@@ -10,7 +10,8 @@
     <link href="{% static 'myaccount/css/styles.css' %}" rel="stylesheet">
 </head>
 <body>
-<i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+<i class="bi bi-list mobile-nav-toggle d-xl-none"><img style="width: 50%;" src="{% static 'myaccount/img/menu.png' %}"
+                                                       alt=""></i>
 <header id="header">
     <div class="d-flex flex-column">
         <div class="profile">
@@ -19,36 +20,23 @@
         </div>
         <nav id="navbar" class="nav-menu navbar">
             <ul>
-                {% if user.is_authenticated and user.is_staff %}
-                    <li><a href="{% url 'main_page' %}" class="nav-link scrollto active"><i class="bx bx-home"></i>
-                        <span>Главная</span></a>
-                    </li>
-                    <li><a href="{% url 'product_list' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Работа с продуктами</span></a>
-                    </li>
-                    <li><a href="{% url 'product_list' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Новые заказы</span></a>
-                    </li>
-                    <li><a href="{% url 'product_list' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Заказы в работе</span></a>
-                    </li>
-                    <li><a href="{% url 'product_list' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Завершенные заказы</span></a>
-                    </li>
-                    <li><a href="{% url 'user_logout' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Выйти</span></a>
-                    </li>
-                {% else %}
-                    <li><a href="{% url 'main_page' %}" class="nav-link scrollto active"><i class="bx bx-home"></i>
-                        <span>Главная</span></a>
-                    </li>
-                    <li><a href="{% url 'favorite_products' %}" class="nav-link scrollto"><i class="bx bx-user"></i>
-                        <span>Избранное</span></a>
-                    </li>
-                    <li><a href="{% url 'cart_products' %}" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
-                        <span>Корзина</span></a></li>
-                    <li><a href="#about" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Активные заказы</span></a>
-                    </li>
-                    <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-server"></i>
-                        <span>История заказов</span></a></li>
-                    <li><a href="{% url 'user_logout' %}" class="nav-link scrollto"><i class="bx bx-server"></i>
-                        <span>Выйти</span></a></li>
-                {% endif %}
+
+                <li><a href="{% url 'main_page' %}" class="nav-link scrollto active"><i class="bx bx-home"></i>
+                    <span>Главная</span></a>
+                </li>
+                <li><a href="{% url 'favorite_products' %}" class="nav-link scrollto"><i class="bx bx-user"></i>
+                    <span>Избранное</span></a>
+                </li>
+                <li><a href="{% url 'cart_products' %}" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
+                    <span>Корзина</span></a></li>
+                <li><a href="#about" class="nav-link scrollto"><i class="bx bx-book-content"></i>
+                    <span>Активные заказы</span></a>
+                </li>
+                <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-server"></i>
+                    <span>История заказов</span></a></li>
+                <li><a href="{% url 'user_logout' %}" class="nav-link scrollto"><i class="bx bx-server"></i>
+                    <span style="color: red;">Выйти</span></a></li>
+
             </ul>
         </nav>
     </div>
@@ -63,13 +51,11 @@
 </section>
 
 <main id="main">
-    {% if user.is_authenticated and user.is_staff %}
 
-    {% else %}
 
-        <section id="about" class="about">
+    <section id="about" class="about">
         {% if active_orders %}
-        	<div class="container">
+            <div class="container">
 
                 <div class="section-title">
                     <h2>Активные заказы</h2>
@@ -78,7 +64,13 @@
                         {% for order in active_orders %}
                             <div class='active_box'>
                                 <h5>Заказ номер: {{ order.id }}</h5>
-                                <p>Название компании - <em>{{ order.company_name }}</em></p>
+                                <p>Название компании -
+                                    <em>
+                                        {% if company_name %}
+                                            {{ company_name }}
+                                        {% endif %}
+                                    </em>
+                                </p>
                                 <p>Доставка к - <em>{{ order.delivery_date }}</em></p>
                                 <p>Статус заказа - <em>{{ order.status.name }}</em></p>
                                 <hr>
@@ -98,10 +90,10 @@
             </div>
         {% endif %}
 
-        </section>
-        <section id="resume" class="resume">
+    </section>
+    <section id="resume" class="resume">
         {% if completed_orders %}
-        	<div class="container">
+            <div class="container">
 
                 <div class="section-title">
                     <h2>История заказов</h2>
@@ -110,7 +102,13 @@
                         {% for order in completed_orders %}
                             <div class='active_box'>
                                 <h5>Заказ номер: {{ order.id }}</h5>
-                                <p>Название компании - <em>{{ order.company_name }}</em></p>
+                                <p>Название компании -
+                                    <em>
+                                        {% if company_name %}
+                                            {{ company_name }}
+                                        {% endif %}
+                                    </em>
+                                </p>
                                 <p>Доставка к - <em>{{ order.delivery_date }}</em></p>
                                 <p>Статус заказа - <em>{{ order.status.name }}</em></p>
                                 <hr>
@@ -128,10 +126,10 @@
                 </div>
             </div>
         {% endif %}
-        </section>
-    {% endif %}
+    </section>
 </main>
 <script src="{% static 'myaccount/vendor/typed.js/typed.umd.js' %}"></script>
 <script src="{% static 'myaccount/js/main.js' %}"></script>
+
 </body>
 </html>
