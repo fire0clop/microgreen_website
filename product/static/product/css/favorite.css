@@ -203,7 +203,7 @@ ul {
   width: 20px;
   height: 20px;
 }
-@media(max-width: 768px){
+@media(max-width: 868px){
     .cart_items {
     display: flex;
     flex-direction: column; /* Организовать элементы в колонку */

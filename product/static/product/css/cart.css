@@ -1,4 +1,4 @@
-body{
+body {
     background: #ddd;
     min-height: 100vh;
     vertical-align: middle;
@@ -7,10 +7,12 @@ body{
     font-size: 0.8rem;
     font-weight: bold;
 }
-.title{
+
+.title {
     margin-bottom: 5vh;
 }
-.card{
+
+.card {
     margin: auto;
     max-width: 950px;
     width: 90%;
@@ -18,86 +20,105 @@ body{
     border-radius: 1rem;
     border: transparent;
 }
-@media(max-width:767px){
-    .card{
+
+@media (max-width: 767px) {
+    .card {
         margin: 3vh auto;
     }
 }
-.cart{
+
+.cart {
     background-color: #fff;
     padding: 4vh 5vh;
     border-bottom-left-radius: 1rem;
     border-top-left-radius: 1rem;
 }
-@media(max-width:767px){
-    .cart{
+
+@media (max-width: 767px) {
+    .cart {
         padding: 4vh;
         border-bottom-left-radius: unset;
         border-top-right-radius: 1rem;
     }
 }
-.summary{
+
+.summary {
     background-color: #ddd;
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
     padding: 4vh;
     color: rgb(65, 65, 65);
 }
-@media(max-width:767px){
-    .summary{
-    border-top-right-radius: unset;
-    border-bottom-left-radius: 1rem;
+
+@media (max-width: 767px) {
+    .summary {
+        border-top-right-radius: unset;
+        border-bottom-left-radius: 1rem;
     }
 }
-.summary .col-2{
+
+.summary .col-2 {
     padding: 0;
 }
-.summary .col-10
-{
+
+.summary .col-10 {
     padding: 0;
-}.row{
+}
+
+.row {
     margin: 0;
     padding: 0px 10px;
 }
-.title b{
+
+.title b {
     font-size: 1.5rem;
 }
 
-.main{
+.main {
     margin: 0;
     padding: 2vh 0;
     width: 100%;
 }
-.col-2, .col{
+
+.col-2, .col {
     padding: 0 1vh;
 }
-a{
+
+a {
     padding: 0 1vh;
 }
-.cart_img_catalog{
-  width: 20px;
-  height: 20px;
+
+.cart_img_catalog {
+    width: 20px;
+    height: 20px;
 }
-.close{
+
+.close {
     margin-left: auto;
     font-size: 0.7rem;
 }
-img{
+
+img {
     width: 3.5rem;
 }
-.back-to-shop{
+
+.back-to-shop {
     margin-top: 4.5rem;
 }
-h5{
+
+h5 {
     margin-top: 4vh;
 }
-hr{
+
+hr {
     margin-top: 1.25rem;
 }
-form{
+
+form {
     padding: 2vh 0;
 }
-select{
+
+select {
     border: 1px solid rgba(0, 0, 0, 0.137);
     padding: 1.5vh 1vh;
     margin-bottom: 4vh;
@@ -105,7 +126,8 @@ select{
     width: 100%;
     background-color: rgb(247, 247, 247);
 }
-input{
+
+input {
     border: 1px solid rgba(0, 0, 0, 0.137);
     padding: 1vh;
     margin-bottom: 4vh;
@@ -113,11 +135,12 @@ input{
     width: 100%;
     background-color: rgb(247, 247, 247);
 }
-input:focus::-webkit-input-placeholder
-{
-      color:transparent;
+
+input:focus::-webkit-input-placeholder {
+    color: transparent;
 }
-.btn{
+
+.btn {
     background-color: #000;
     border-color: #000;
     color: white;
@@ -127,7 +150,8 @@ input:focus::-webkit-input-placeholder
     padding: 1vh;
     border-radius: 0;
 }
-.btn:focus{
+
+.btn:focus {
     box-shadow: none;
     outline: none;
     box-shadow: none;
@@ -136,19 +160,95 @@ input:focus::-webkit-input-placeholder
     -webkit-user-select: none;
     transition: none;
 }
-.btn:hover{
+
+.btn:hover {
     color: white;
 }
-a{
+
+a {
     color: black;
 }
-a:hover{
+
+a:hover {
     color: black;
     text-decoration: none;
 }
- #code{
-    background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253) , rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
+
+#code {
+    background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
     background-repeat: no-repeat;
     background-position-x: 95%;
     background-position-y: center;
+}
+
+#message-container {
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    width: 60%;
+    max-height: 30%;
+    padding: 2px;
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7); /* Затемнение фона */
+    border-radius: 15px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Установите более высокий z-index, чтобы контейнер оказался поверх всех остальных элементов */
+}
+
+#message-container p {
+    font-size: 15px;
+}
+
+/* Стили для сообщения */
+#message {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.question_img {
+    width: 25px;
+    height: 25px;
+}
+.messages_sucs {
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 13%;
+    height:auto;
+    right: 1%; /* Вы можете настроить правильное значение в соответствии с вашим дизайном */
+    top: 2%; /* Вы можете настроить правильное значение в соответствии с вашим дизайном */
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    position: fixed;
+    z-index: 1000; /* Установите желаемый z-index, чтобы убедиться, что блок находится поверх других элементов */
+    display: none; /* Начнем с блока, который скрыт по умолчанию */
+}
+
+.messages_sucs p {
+    font-size: 15px;
+    padding: 12px;
+}
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+        max-width: 1020px !important;
+    }
+}
+@media (max-width: 991px) {
+                /*message*/
+    .messages_sucs {
+        width: 25%;
+
+    }
+    .messages_sucs p {
+    font-size: 24px;
+    }
+
+    .count_numb{
+        font-size: 24px;
+    }
 }

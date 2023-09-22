@@ -4,15 +4,26 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from .models import Product, ProductImage
 from .forms import ProductForm, ProductImageForm
-from myaccount.models import Profile
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from ordering.forms import OrderForm
 from ordering.models import OrderItem, Order, Status
+from django.utils.decorators import method_decorator
+from django.contrib.admin.views.decorators import staff_member_required
 class MainPage(ListView):
     model = Product
     template_name = 'product/main_page.html'
     context_object_name = 'products'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        favorites = self.request.session.get('favorites', [])
+        favorites_products = Product.objects.filter(id__in=favorites)
+        cart = self.request.session.get('cart', [])
+        cart_products = Product.objects.filter(id__in=cart)
+        context['cart_products'] = cart_products
+        context['favorites_products'] = favorites_products
+
+        return context
 def toggle_favorite(request, product_id):
     # Получите текущую сессию пользователя
     session_key = request.session.session_key
@@ -23,15 +34,19 @@ def toggle_favorite(request, product_id):
     # Получите список избранных продуктов из сессии (если есть)
     favorites = request.session.get('favorites', [])
 
-
+    try:
+        product = Product.objects.get(id=product_id)
+        product_name = product.name
+    except Product.DoesNotExist:
+        product_name = "Неизвестный продукт"
     if product_id in favorites:
         # Если продукт уже в избранном, удалите его
         favorites.remove(product_id)
-        messages.success(request, "Продукт удален из избранного.")
+        messages.success(request, f"Товар '{product_name}' удален из избранного.")
     else:
         # В противном случае, добавьте продукт в избранное
         favorites.append(product_id)
-        messages.success(request, "Продукт добавлен в избранное.")
+        messages.success(request, f"Товар '{product_name}' успешно добавлен в избранное.")
 
     # Обновите список избранных продуктов в сессии
     request.session['favorites'] = favorites
@@ -63,16 +78,20 @@ def toggle_cart(request, product_id):
 
     # Получите список товаров в корзине из сессии (если есть)
     cart = request.session.get('cart', [])
-
+    try:
+        product = Product.objects.get(id=product_id)
+        product_name = product.name
+    except Product.DoesNotExist:
+        product_name = "Неизвестный продукт"
 
     if product_id in cart:
         # Если товар уже в корзине, удалите его
         cart.remove(product_id)
-        messages.success(request, "Товар удален из корзины.")
+        messages.success(request, f"Товар '{product_name}' удален из корзины.")
     else:
         # В противном случае, добавьте товар в корзину
         cart.append(product_id)
-        messages.success(request, "Товар добавлен в корзину.")
+        messages.success(request, f"Товар '{product_name}' успешно добавлен в корзину.")
 
     # Обновите список товаров в корзине в сессии
     request.session['cart'] = cart
@@ -85,6 +104,12 @@ def cart_products(request):
         # Получите данные из формы
         comment = request.POST.get('comment')
         delivery_date = request.POST.get('delivery_date')
+
+        # Проверьте, что дата доставки была указана
+        if not delivery_date:
+            messages.error(request, "Пожалуйста, укажите дату доставки.")
+            return redirect('cart_products')  # Замените 'your_cart_view_name' на имя вашего представления корзины
+
         user = request.user  # Текущий пользователь
 
         status = Status.objects.get(id=1)  # Замените на соответствующий статус
@@ -108,16 +133,14 @@ def cart_products(request):
         # Очистите корзину
         request.session['cart'] = []
 
-
-        return redirect('main_page')  # Замените 'success_page' на URL страницы успешного оформления заказа
+        return redirect('main_page')
 
     # Если это не POST-запрос, продолжайте отображать корзину
     cart = request.session.get('cart', [])
     cart_products = Product.objects.filter(id__in=cart)
 
     return render(request, 'product/cart_products.html', {'cart_products': cart_products})
-
-
+@method_decorator(staff_member_required, name='dispatch')
 def create_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -130,6 +153,7 @@ def create_product(request):
     else:
         form = ProductForm()
     return render(request, 'product/product_create.html', {'form': form})
+@method_decorator(staff_member_required, name='dispatch')
 class ProductList(ListView):
     template_name = 'product/product_list.html'
     context_object_name = 'products'
@@ -149,11 +173,26 @@ class ProductDetailView(DetailView):
     queryset = Product.objects.prefetch_related('images')
     template_name = 'product/product_detail.html'
     context_object_name = 'products'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = self.get_object()
+        favorites = self.request.session.get('favorites', [])
+        favorites_products =Product.objects.filter(id__in=favorites)
+        cart = self.request.session.get('cart', [])
+        cart_products = Product.objects.filter(id__in=cart)
+        context['cart_products'] = cart_products
+        context['favorites_products'] = favorites_products
+
+        return context
+
+@method_decorator(staff_member_required, name='dispatch')
 def delete_image(request, pk):
     image = get_object_or_404(ProductImage, pk=pk)
     product = image.product
     image.delete()
     return redirect('product_update', pk=product.pk)
+@method_decorator(staff_member_required, name='dispatch')
 class ProductEditView(UpdateView):
     model = Product
     form_class = ProductForm
@@ -179,6 +218,7 @@ class ProductEditView(UpdateView):
             # Если нажата кнопка "Save Changes", сохраняем изменения в продукте
             form.save()
         return super().form_valid(form)
+@method_decorator(staff_member_required, name='dispatch')
 class ProductDeleteView(DeleteView):
     template_name = 'product/product_delete.html'
     model = Product
@@ -187,5 +227,15 @@ class ProductCatalog(ListView):
     template_name = 'product/product_catalog.html'
     model = Product
     context_object_name = 'products'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        favorites = self.request.session.get('favorites', [])
+        favorites_products = Product.objects.filter(id__in=favorites)
+        cart = self.request.session.get('cart', [])
+        cart_products = Product.objects.filter(id__in=cart)
+        context['cart_products'] = cart_products
+        context['favorites_products'] = favorites_products
+
+        return context
 
 

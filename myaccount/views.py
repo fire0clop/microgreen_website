@@ -8,18 +8,17 @@ from ordering.models import Order, Status
 from .forms import UserRegisterForm
 from .models import Profile
 from django.contrib.auth.views import LogoutView, LoginView
-
+from django.contrib import messages
+from django.utils.decorators import method_decorator
+from django.contrib.admin.views.decorators import staff_member_required
 
 def mainlog(request):
     return render(request, 'myaccount/base.html')
-
+@method_decorator(staff_member_required, name='dispatch')
 class UserListView(ListView):
     model = User
     template_name = 'myaccount/user_list.html'
     context_object_name = 'users'
-
-
-
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -28,37 +27,54 @@ def register(request):
             phone = form.cleaned_data.get('phone')
             company_name = form.cleaned_data.get('company_name')
             Profile.objects.create(user=user, phone=phone, company_name=company_name)
-            return redirect('user_login') # замените 'login' на адрес своей страницы входа
+
+            # Автоматически входим пользователя после успешной регистрации
+            login(request, user)
+
+            messages.success(request, 'Вы успешно зарегистрировались!')
+            return redirect('user_login')  # Замените 'user_login' на адрес вашей страницы входа
+
+        else:
+            messages.error(request, 'Исправьте ошибки в форме ниже.')
+
     else:
         form = UserRegisterForm()
-    return render(request, 'myaccount/user_create.html', {'form': form})
 
+    return render(request, 'myaccount/user_create.html', {'form': form})
+@method_decorator(staff_member_required, name='dispatch')
 class DetailsUserView(DetailView):
     template_name = 'myaccount/user_detail.html'
     model = Profile
     context_object_name = 'users'
-
+@method_decorator(staff_member_required, name='dispatch')
 class UpdateUserView(UpdateView):
     template_name = 'myaccount/user_update.html'
     model = Profile
     fields = ['email', 'phone']
     success_url = reverse_lazy('user_list')
-
-
-
 class MyLoginView(LoginView):
     redirect_authenticated_user = True
     template_name = 'myaccount/login.html'  # Ваш шаблон для входа
 
-    def get_success_url(self):
-        # Проверяем, является ли пользователь администратором
-        if self.request.user.is_authenticated and self.request.user.is_staff:
-            return reverse_lazy('admin_account')  # URL-адрес для администраторов
-        return reverse_lazy('my_account')  # URL-адрес для обычных пользователей
+    def form_valid(self, form):
+        # Входим пользователя
+        self.user = form.get_user()
+        login(self.request, self.user)
 
+        # Используем параметр 'next' из запроса для перенаправления пользователя
+        next_url = self.request.GET.get('next', None)
+
+        # Проверяем 'next' и перенаправляем пользователя на соответствующую страницу
+        if next_url:
+            return redirect(next_url)
+
+        # Если 'next' не указан, то в зависимости от пользователя перенаправляем на административную или обычную страницу
+        if self.user.is_staff:
+            return reverse_lazy('admin_account')  # URL-адрес для администраторов
+        else:
+            return reverse_lazy('my_account')  # URL-адрес для обычных пользователей
 class LogoutView(LogoutView):
     next_page = reverse_lazy('main_page')
-
 def myaccount(request):
     user = request.user  # Получаем текущего пользователя
 
@@ -74,8 +90,7 @@ def myaccount(request):
         company_name = None
 
     return render(request, 'myaccount/my_account.html', {'active_orders': active_orders, 'completed_orders': completed_orders, 'company_name': company_name})
-
-
+@method_decorator(staff_member_required, name='dispatch')
 class OrderListView(View):
     template_name = 'myaccount/my_account_admin.html'
 

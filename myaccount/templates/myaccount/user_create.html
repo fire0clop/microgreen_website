@@ -17,32 +17,55 @@
                 <div class="input-box">
                     <span class="details">Имя пользователя</span>
                     {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="error-message">{{ form.username.errors }}</div>
+                    {% endif %}
                 </div>
 
                 <div class="input-box">
                     <span class="details">Название организации</span>
                     {{ form.company_name }}
+                    {% if form.company_name.errors %}
+                        <div class="error-message">{{ form.company_name.errors }}</div>
+                    {% endif %}
                 </div>
 
                 <div class="input-box">
+                    <hr>
+                    <li>Пароль должен состоять из минимум 6 символов</li>
+                    <li>Пароль должен содержать хотя бы одну цифру</li>
+                    <hr>
                     <span class="details">Пароль</span>
+
                     {{ form.password1 }}
-                </div>
-                <div class="input-box">
-                    <span class="details">Повторите пароль</span>
-                    {{ form.password2 }}
+                    {% if form.password1.errors %}
+                        <div class="error-message">{{ form.password1.errors }}</div>
+                    {% endif %}
                 </div>
                 <div class="input-box">
                     <span class="details">Номер телефона</span>
                     {{ form.phone }}
+                    {% if form.phone.errors %}
+                        <div class="error-message">{{ form.phone.errors }}</div>
+                    {% endif %}
                 </div>
+                <div class="input-box">
+                    <span class="details">Повторите пароль</span>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="error-message">{{ form.password2.errors }}</div>
+                    {% endif %}
+                </div>
+
+
             </div>
             <div class="button">
                 <input type="submit" value="Регистрация">
             </div>
             <div class="back-to-shop"><a href="{% url 'main_page' %}">&leftarrow;<span class="text-muted">Вернуться в магазин</span></a>
-                    </div>
+            </div>
         </form>
+
     </div>
 </div>
 </body>
