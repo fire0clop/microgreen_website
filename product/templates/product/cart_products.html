@@ -11,7 +11,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-
+<div class="messages_sucs">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }} auto-hide"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
 
 <div class="container">
     <form method="post">
@@ -35,57 +43,55 @@
                                     <div class="row text-muted">{{ product.category }}</div>
                                     <div class="row">{{ product.name }}</div>
                                 </div>
+                                {#                                <div class="col-3">#}
+                                {#                                    <input type="number" name="quantity_{{ product.id }}" class="counter-input" min="1"#}
+                                {#                                           value="1"#}
+                                {#                                           id="quantity_{{ product.id }}">#}
+                                {#                                </div>#}
                                 <div class="col-3">
                                     <input type="number" name="quantity_{{ product.id }}" class="counter-input" min="1"
-                                           value="1"
-                                           id="quantity_{{ product.id }}">
+                                           value="1" id="quantity_{{ product.id }}" data-product-id="{{ product.id }}">
                                 </div>
 
-                                <div class="col"><p class="productResult" id="result_{{ product.id }}">0₽</p></div>
-                            <div class="col">
-                                {% if product.id in request.session.cart %}
-                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                        {% csrf_token %}
-                                        <a href="{% url 'toggle_cart' product.id %}"
-                                           class="toggle-cart-link is-in-cart">
-                                            <img src="{% static 'product/img/rab_red.png' %}"
-                                                 alt="Удалить из корзины" class="cart_img_catalog">
-                                        </a>
-                                    </form>
-                                {% else %}
-                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                        {% csrf_token %}
-                                        <a href="{% url 'toggle_cart' product.id %}"
-                                           class="toggle-cart-link">
-                                            <img src="{% static 'product/img/cart.png' %}"
-                                                 alt="Добавить в корзину" class="cart_img_catalog">
-                                        </a>
-                                    </form>
-                                {% endif %}</div>
+
+                                {#                                <div class="col"><p class="productResult" id="result_{{ product.id }}">0₽</p></div>#}
+                                <div class="col">
+                                    {% if product.id in request.session.cart %}
+                                        <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <a href="{% url 'toggle_cart' product.id %}"
+                                                       class="toggle-cart-link is-in-cart"
+                                                       data-product-id="{{ product.id }}">
+                                                        <img src="{% static 'product/img/rab_red.png' %}"
+                                                             alt="Удалить из корзины" class="cart_img_catalog">
+                                                    </a>
+                                                </form>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                        <script>
-                            // Функция для обновления результата
-                            function updateResult{{ product.id }}() {
-                                // Получаем значение из поля ввода и выполняем арифметические операции
-                                const inputValue{{ product.id }} = parseFloat(inputNumber{{ product.id }}.value);
-                                const result{{ product.id }} = inputValue{{ product.id }} * {{ product.price }};
-
-                                // Отображаем результат на странице
-                                const resultElement{{ product.id }} = document.getElementById('result_{{ product.id }}');
-                                resultElement{{ product.id }}.textContent = `${result{{ product.id }}}₽`;
-
-                                // Вызываем функцию для обновления итоговой стоимости
-                                updateTotalCost();
-                            }
-
-                            // Добавляем слушатель события input на поле ввода
-                            const inputNumber{{ product.id }} = document.getElementById('quantity_{{ product.id }}');
-                            inputNumber{{ product.id }}.addEventListener('input', updateResult{{ product.id }});
-
-                            // Вызываем функцию для обновления результата при загрузке страницы
-                            updateResult{{ product.id }}();
-                        </script>
+                        {#                        <script>#}
+                        {#    // Функция для обновления результата#}
+                        {#    function updateResult{{ product.id }}() {#}
+                        {#        // Получаем значение из поля ввода и выполняем арифметические операции#}
+                        {#        const inputValue{{ product.id }} = parseFloat(inputNumber{{ product.id }}.value);#}
+                        {#        const result{{ product.id }} = inputValue{{ product.id }} * {{ product.price }};#}
+                        {##}
+                        {#        // Отображаем результат на странице#}
+                        {#        const resultElement{{ product.id }} = document.getElementById('result_{{ product.id }}');#}
+                        {#        resultElement{{ product.id }}.textContent = `${result{{ product.id }}}₽`;#}
+                        {##}
+                        {#        // Вызываем функцию для обновления итоговой стоимости#}
+                        {#        updateTotalCost();#}
+                        {#    }#}
+                        {##}
+                        {#    // Добавляем слушатель события input на поле ввода#}
+                        {#    const inputNumber{{ product.id }} = document.getElementById('quantity_{{ product.id }}');#}
+                        {#    inputNumber{{ product.id }}.addEventListener('input', updateResult{{ product.id }});#}
+                        {##}
+                        {#    // Вызываем функцию для обновления результата при загрузке страницы#}
+                        {#    updateResult{{ product.id }}();#}
+                        {#</script>#}
                     {% endfor %}
 
 
@@ -94,27 +100,34 @@
                     <div><h5><b>Доплонительная информация</b></h5></div>
                     <hr>
                     <p>Дополнительные комментарии:</p>
-                    <div class="col">
+                    <div style="display: flex; align-items: center">
                         <input type="text" name="comment" placeholder="Комментарии к заказу">
+                        <img src="{% static 'product/img/question.png' %}" class="question_img" id="question-icon"
+                             alt="Вопрос">
+                    </div>
+
+                    <div id="message-container" class="message_info">
+                        <p id="success-message">Здесь вы можете добавить время доставки(до обеда или после обеда), а
+                            также любые дополнительные пожелания к доставке или к продуктам</p>
                     </div>
                     <br>
-                    <p>Дата дотавки:</p>
+                    <p>Дата доcтавки:</p>
                     <div class="col">
                         <input type="date" name="delivery_date">
                     </div>
                     <br>
                     <div class="col">
                         <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                            <div class="col">Итоговая стоимость</div>
-                            <div class="col text-right">
-                                <p id="totalCost">0 руб.</p>
-                            </div>
+                            {#                            <div class="col">Итоговая стоимость</div>#}
+                            {#                            <div class="col text-right">#}
+                            {#                                <p id="totalCost">0 руб.</p>#}
+                            {#                            </div>#}
                         </div>
                         <button style="background-color: white;padding: 10px; border-radius: 20px" lass="btn">Отправить
                             заказ
                         </button>
                     </div>
-                    <div class="back-to-shop"><a href="{% url 'main_page' %}">&leftarrow;</a><span class="text-muted">Вернуться в магазин</span>
+                    <div class="back-to-shop"><a href="{% url 'main_page' %}">&leftarrow;<span class="text-muted">Вернуться в магазин</span></a>
                     </div>
                 </div>
             </div>
@@ -122,26 +135,139 @@
     </form>
 </div>
 
+{#<script>#}
+{#    function updateTotalCost() {#}
+{#        let totalCost = 0;#}
+{##}
+{#        // Итерируемся по всем продуктам и суммируем их промежуточные итоги#}
+{#        const productResults = document.querySelectorAll('.productResult');#}
+{#        productResults.forEach((element) => {#}
+{#            const result = parseFloat(element.textContent.replace('Итог: ', '').replace('₽', ''));#}
+{#            if (!isNaN(result)) {#}
+{#                totalCost += result;#}
+{#            }#}
+{#        });#}
+{##}
+{#        // Отображаем обновленную итоговую стоимость#}
+{#        const totalCostElement = document.getElementById('totalCost');#}
+{#        totalCostElement.textContent = `${totalCost} руб.`;#}
+{#    }#}
+{##}
+{#    // Вызываем функцию для обновления итоговой стоимости при загрузке страницы#}
+{#    updateTotalCost();#}
+{#</script>#}
 <script>
-    function updateTotalCost() {
-        let totalCost = 0;
+    // Получаем элементы DOM
+    var questionIcon = document.getElementById("question-icon");
+    var messageContainer = document.getElementById("message-container");
+    var successMessage = document.getElementById("success-message");
 
-        // Итерируемся по всем продуктам и суммируем их промежуточные итоги
-        const productResults = document.querySelectorAll('.productResult');
-        productResults.forEach((element) => {
-            const result = parseFloat(element.textContent.replace('Итог: ', '').replace('₽', ''));
-            if (!isNaN(result)) {
-                totalCost += result;
-            }
+    // Добавляем обработчик события на клик по изображению
+    questionIcon.addEventListener("click", function () {
+        // Показываем сообщение
+        messageContainer.style.display = "block";
+    });
+
+    // Добавляем обработчик события на клик в любом месте документа
+    document.addEventListener("click", function (event) {
+        // Проверяем, был ли клик вне блока сообщения и изображения
+        if (event.target !== questionIcon && event.target !== successMessage) {
+            // Скрываем сообщение
+            messageContainer.style.display = "none";
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var autoHideMessages = document.querySelectorAll('.auto-hide');
+        var messagesBlock = document.querySelector('.messages_sucs');
+
+        autoHideMessages.forEach(function (message) {
+            setTimeout(function () {
+                message.style.display = 'none';
+                messagesBlock.style.display = 'none'; // Скрыть блок сообщений
+            }, 6000);
         });
 
-        // Отображаем обновленную итоговую стоимость
-        const totalCostElement = document.getElementById('totalCost');
-        totalCostElement.textContent = `${totalCost} руб.`;
+        // Отобразить блок сообщений при наличии сообщений
+        if (messagesBlock && autoHideMessages.length > 0) {
+            messagesBlock.style.display = 'block';
+        }
+    });
+</script>
+<script>
+    // JavaScript для управления счетчиками
+    var decreaseButtons = document.querySelectorAll(".decrease");
+    var increaseButtons = document.querySelectorAll(".increase");
+    var quantityInputs = document.querySelectorAll(".quantity, .counter-input");
+
+    // Функция для сохранения значения в Local Storage
+    function saveQuantityToLocalStorage(input) {
+        var currentValue = parseInt(input.value, 10);
+        if (!isNaN(currentValue) && currentValue >= 1) {
+            localStorage.setItem("quantity_" + input.getAttribute("data-product-id"), currentValue.toString());
+        }
     }
 
-    // Вызываем функцию для обновления итоговой стоимости при загрузке страницы
-    updateTotalCost();
+    for (var i = 0; i < decreaseButtons.length; i++) {
+        decreaseButtons[i].addEventListener("click", function () {
+            var input = this.parentElement.querySelector(".quantity");
+            var currentValue = parseInt(input.value, 10);
+            if (currentValue > 1) {
+                input.value = (currentValue - 1).toString();
+                saveQuantityToLocalStorage(input);
+            }
+        });
+    }
+
+    for (var i = 0; i < increaseButtons.length; i++) {
+        increaseButtons[i].addEventListener("click", function () {
+            var input = this.parentElement.querySelector(".quantity");
+            var currentValue = parseInt(input.value, 10);
+            input.value = (currentValue + 1).toString();
+            saveQuantityToLocalStorage(input);
+        });
+    }
+
+    for (var i = 0; i < quantityInputs.length; i++) {
+        quantityInputs[i].addEventListener("input", function () {
+            var input = this;
+            var currentValue = parseInt(input.value, 10);
+            if (isNaN(currentValue) || currentValue < 1) {
+                input.value = "1";
+            }
+            saveQuantityToLocalStorage(input);
+        });
+    }
+
+    // Функция для восстановления сохраненного значения из Local Storage
+    function restoreQuantityFromLocalStorage(input) {
+        var savedValue = localStorage.getItem("quantity_" + input.getAttribute("data-product-id"));
+        if (savedValue) {
+            input.value = savedValue;
+        }
+    }
+
+    // Восстанавливаем значения из Local Storage при загрузке страницы
+    for (var i = 0; i < quantityInputs.length; i++) {
+        restoreQuantityFromLocalStorage(quantityInputs[i]);
+    }
+</script>
+<script>
+var removeFromCartButtons = document.querySelectorAll(".toggle-cart-link.is-in-cart");
+
+// Добавить обработчик события click для каждой кнопки
+for (var i = 0; i < removeFromCartButtons.length; i++) {
+    removeFromCartButtons[i].addEventListener("click", function (event) {
+        // Предотвратить перехват события скриптом
+        event.stopPropagation();
+
+        var productID = this.getAttribute("data-product-id"); // Получить data-product-id
+
+        // Удалить значение счетчика из Local Storage
+        localStorage.removeItem("quantity_" + productID);
+    });
+}
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>

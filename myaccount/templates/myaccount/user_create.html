@@ -17,33 +17,78 @@
                 <div class="input-box">
                     <span class="details">Имя пользователя</span>
                     {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="error-message">{{ form.username.errors }}</div>
+                    {% endif %}
                 </div>
 
                 <div class="input-box">
                     <span class="details">Название организации</span>
                     {{ form.company_name }}
+                    {% if form.company_name.errors %}
+                        <div class="error-message">{{ form.company_name.errors }}</div>
+                    {% endif %}
                 </div>
 
                 <div class="input-box">
+                    <hr>
+                    <li>Пароль должен состоять из минимум 6 символов</li>
+                    <li>Пароль должен содержать хотя бы одну цифру</li>
+                    <hr>
                     <span class="details">Пароль</span>
+
                     {{ form.password1 }}
-                </div>
-                <div class="input-box">
-                    <span class="details">Повторите пароль</span>
-                    {{ form.password2 }}
+                    {% if form.password1.errors %}
+                        <div class="error-message">{{ form.password1.errors }}</div>
+                    {% endif %}
                 </div>
                 <div class="input-box">
                     <span class="details">Номер телефона</span>
-                    {{ form.phone }}
+                    <input type="text" id="phone-input" name="{{ form.phone.name }}" value="{{ form.phone.value }}"
+                           class="form-control">
+                    {% if form.phone.errors %}
+                        <div class="error-message">{{ form.phone.errors }}</div>
+                    {% endif %}
                 </div>
+
+
+                <div class="input-box">
+                    <span class="details">Повторите пароль</span>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="error-message">{{ form.password2.errors }}</div>
+                    {% endif %}
+                </div>
+
+
             </div>
             <div class="button">
                 <input type="submit" value="Регистрация">
             </div>
             <div class="back-to-shop"><a href="{% url 'main_page' %}">&leftarrow;<span class="text-muted">Вернуться в магазин</span></a>
-                    </div>
+            </div>
         </form>
+
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Получаем элемент поля телефона по его ID
+        var phoneInput = $('#phone-input');
+
+        // При изменении значения поля телефона
+        phoneInput.on('change', function () {
+            var currentValue = phoneInput.val();
+
+            // Проверяем, содержит ли текущее значение код страны '+7'
+            if (currentValue.indexOf('+7') === -1) {
+                // Если не содержит, добавляем код страны в начало
+                phoneInput.val('+7' + currentValue);
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

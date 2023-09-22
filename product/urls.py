@@ -23,7 +23,7 @@ urlpatterns = [
     path('toggle_favorite/<int:product_id>/', toggle_favorite, name='toggle_favorite'),
     path('product_favorites/',favorite_products, name = 'favorite_products'),
     path('toggle_cart/<int:product_id>/', toggle_cart, name='toggle_cart'),
-    path('product_cart/', cart_products, name = 'cart_products')
+    path('product_cart/', cart_products, name = 'cart_products'),
 
 
 ]

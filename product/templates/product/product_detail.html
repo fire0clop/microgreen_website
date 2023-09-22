@@ -48,28 +48,36 @@
                     <div class="user_option">
                         {% if user.is_authenticated and user.is_staff %}
                             <a href="{% url 'admin_account' %}" class="user_link">
-                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <img class="cart_img_catalog" src="{% static 'product/img/user.png' %}" alt="">
                             </a>
                         {% elif user.is_authenticated %}
-                            <a href="{% url 'my_account' %}" class="user_link">
-                                <i class="fa fa-user" aria-hidden="true"></i>
+                            <a href="{% url 'my_account' %}?next={{ request.path }}" class="user_link">
+                                <img class="cart_img_catalog" src="{% static 'product/img/user.png' %}" alt="">
                             </a>
                         {% else %}
-                            <a href="{% url 'user_login' %}" class="user_link">
-                                <i class="fa fa-user" aria-hidden="true"></i>
+                            <a href="{% url 'user_login' %}?next={{ request.path }}" class="user_link">
+                                <img class="cart_img_catalog" src="{% static 'product/img/user.png' %}" alt="">
                             </a>
                         {% endif %}
 
-                        <a href="{% url 'favorite_products' %}">
-                            <img class="cart_img_catalog" src="{% static 'product/img/heart.png' %}" alt="">
+                        <a class="cart_link" href="{% url 'favorite_products' %}">
+                            <div class="count_numb"><img class="cart_img_catalog"
+                                                         src="{% static 'product/img/heart.png' %}"
+                                                         alt="">{{ favorites_products.count }}</div>
                         </a>
+
                         {% if user.is_authenticated %}
                             <a class="cart_link" href="{% url 'cart_products' %}">
-                                <img class="cart_img_catalog" src="{% static 'product/img/cart.png' %}" alt="">
+                                <div class="count_numb"><img class="cart_img_catalog"
+                                                             src="{% static 'product/img/cart.png' %}"
+                                                             alt="">{{ cart_products.count }}</div>
                             </a>
                         {% else %}
-                            <a class="cart_link" href="{% url 'user_login' %}">
-                                <img class="cart_img_catalog" src="{% static 'product/img/cart.png' %}" alt="">
+                            <a class="cart_link" href="{% url 'user_login' %}?next={% url 'cart_products' %}"
+                               class="user_link">
+                                <div class="count_numb"><img class="cart_img_catalog"
+                                                             src="{% static 'product/img/cart.png' %}"
+                                                             alt="">{{ cart_products.count }}</div>
                             </a>
                         {% endif %}
                     </div>
@@ -79,6 +87,16 @@
         </div>
     </header>
 </div>
+<div class="messages_sucs">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }} auto-hide"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
 
 <!-- food section -->
 
@@ -94,47 +112,42 @@
     <div class="content_detail">
         <div class="left">
             <div class="main-image">
-                <img src="{{ products.main_image.url }}" alt="Main Image">
+                <img src="{{ product.main_image.url }}" alt="Main Image" id="mainImage">
                 <div class="small-images">
-                    <img src="{{ products.main_image.url }}" alt="Main Image">
-                    {% for image in products.images.all %}
+                    <img src="{{ product.main_image.url }}" alt="Main Image" class="small-image"
+                         data-main-image="{{ product.main_image.url }}">
+                    {% for image in product.images.all %}
                         {% if image.image %}
-                            <img src="{{ image.image.url }}">
+                            <img src="{{ image.image.url }}" class="small-image"
+                                 data-main-image="{{ image.image.url }}">
                         {% endif %}
                     {% endfor %}
-
-                    <div class="prev-arrow">
-                        <div class="arrow-image" data-index="left"></div>
-                    </div>
-                    <div class="next-arrow">
-                        <div class="arrow-image" data-index="right"></div>
-                    </div>
                 </div>
             </div>
         </div>
         <div class="right">
             <div class="product-info">
-                <h1 class="product-title">{{ products.name }}</h1>
-                <p class="product-price">₽ {{ products.price }}/{{ products.weight }}</p>
+                <h1 class="product-title">{{ product.name }}</h1>
+                <br>
                 <p class="product-description">
-                    {{ products.description }}
+                    {{ product.description }}
                 </p>
             </div>
             <div class="product-actions">
                 <div class='favorites-link'>
-                    {% if products.id in request.session.favorites %}
-                        <form action="{% url 'toggle_favorite' products.id %}" method="post">
+                    {% if product.id in request.session.favorites %}
+                        <form action="{% url 'toggle_favorite' product.id %}" method="post">
                             {% csrf_token %}
-                            <a href="{% url 'toggle_favorite' products.id %}"
+                            <a href="{% url 'toggle_favorite' product.id %}"
                                class="toggle-favorite-link is-favorite">
-                                <img src="{% static 'product/img/rab_white.png' %}"
+                                <img src="{% static 'product/img/heart.png' %}"
                                      alt="Удалить из избранного" class="cart_img_catalog">
                             </a>
                         </form>
                     {% else %}
-                        <form action="{% url 'toggle_favorite' products.id %}" method="post">
+                        <form action="{% url 'toggle_favorite' product.id %}" method="post">
                             {% csrf_token %}
-                            <a href="{% url 'toggle_favorite' products.id %}"
+                            <a href="{% url 'toggle_favorite' product.id %}"
                                class="toggle-favorite-link">
                                 <img src="{% static 'product/img/heart.png' %}"
                                      alt="Добавить в избранное" class="cart_img_catalog">
@@ -142,40 +155,52 @@
                         </form>
                     {% endif %}
                 </div>
-                <div class="cart-link">
-                    {% if products.id in request.session.cart %}
-                        <form action="{% url 'toggle_cart' products.id %}" method="post">
+
+                    {% if product.id in request.session.cart %}
+                        <div class="product-quantity">
+                            <button class="quantity-button decrease"
+                                    data-product-id="{{ product.id }}">-
+                            </button>
+                            <input type="number"
+                                   class="quantity" value="1" min="1"
+                                   data-product-id="{{ product.id }}">
+                            <button class="quantity-button increase"
+                                    data-product-id="{{ product.id }}">+
+                            </button>
+                        </div>
+                    {% else %}
+                        <div class="favorites-link">
+                            <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                {% csrf_token %}
+                                <a href="{% url 'toggle_cart' product.id %}"
+                                   class="toggle-cart-link" data-product-id="{{ product.id }}">
+                                    <img src="{% static 'product/img/cart.png' %}"
+                                         alt="Добавить в корзину" class="cart_img_catalog">
+                                </a>
+                            </form>
+                        </div>
+
+                    {% endif %}
+
+                <div class="favorite-link">
+                    {% if product.id in request.session.cart %}
+                        <form action="{% url 'toggle_cart' product.id %}" method="post">
                             {% csrf_token %}
-                            <a href="{% url 'toggle_cart' products.id %}"
-                               class="toggle-cart-link is-in-cart">
+                            <a href="{% url 'toggle_cart' product.id %}"
+                               class="toggle-cart-link is-in-cart"
+                               data-product-id="{{ product.id }}">
                                 <img src="{% static 'product/img/rab_red.png' %}"
-                                     alt="Удалить из корзины" class="cart_img_catalog">
+                                     alt="Удалить из корзины" class="cart_image_rab">
                             </a>
                         </form>
                     {% else %}
-                        <form action="{% url 'toggle_cart' products.id %}" method="post">
-                            {% csrf_token %}
-                            <a href="{% url 'toggle_cart' products.id %}"
-                               class="toggle-cart-link">
-                                <img src="{% static 'product/img/cart.png' %}"
-                                     alt="Добавить в корзину" class="cart_img_catalog">
-                            </a>
-                        </form>
+                        <b href=""></b>
                     {% endif %}
                 </div>
-
-
             </div>
         </div>
     </div>
-
 </section>
-<br><br><br><br><br><br><br>
-
-
-<!-- end food section -->
-
-<!-- footer section -->
 <footer class="footer_section">
     <div class="container">
         <div class="row">
@@ -243,7 +268,111 @@
 
     </div>
 </footer>
-<script src="{% static 'product/js/scripts.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const mainImage = document.getElementById('mainImage');
+        const smallImages = document.querySelectorAll('.small-image');
+
+        smallImages.forEach(function (smallImage) {
+            smallImage.addEventListener('click', function () {
+                const newMainImageSrc = smallImage.getAttribute('data-main-image');
+                mainImage.setAttribute('src', newMainImageSrc);
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var autoHideMessages = document.querySelectorAll('.auto-hide');
+        var messagesBlock = document.querySelector('.messages_sucs');
+
+        autoHideMessages.forEach(function (message) {
+            setTimeout(function () {
+                message.style.display = 'none';
+                messagesBlock.style.display = 'none'; // Скрыть блок сообщений
+            }, 6000);
+        });
+
+        // Отобразить блок сообщений при наличии сообщений
+        if (messagesBlock && autoHideMessages.length > 0) {
+            messagesBlock.style.display = 'block';
+        }
+    });
+</script>
+<script>
+    // JavaScript для управления счетчиками
+    var decreaseButtons = document.querySelectorAll(".decrease");
+    var increaseButtons = document.querySelectorAll(".increase");
+    var quantityInputs = document.querySelectorAll(".quantity");
+
+    // Функция для сохранения значения в Local Storage
+    function saveQuantityToLocalStorage(input) {
+        var currentValue = parseInt(input.value, 10);
+        if (!isNaN(currentValue) && currentValue >= 1) {
+            localStorage.setItem("quantity_" + input.getAttribute("data-product-id"), currentValue.toString());
+        }
+    }
+
+    for (var i = 0; i < decreaseButtons.length; i++) {
+        decreaseButtons[i].addEventListener("click", function () {
+            var input = this.parentElement.querySelector(".quantity");
+            var currentValue = parseInt(input.value, 10);
+            if (currentValue > 1) {
+                input.value = (currentValue - 1).toString();
+                saveQuantityToLocalStorage(input);
+            }
+        });
+    }
+
+    for (var i = 0; i < increaseButtons.length; i++) {
+        increaseButtons[i].addEventListener("click", function () {
+            var input = this.parentElement.querySelector(".quantity");
+            var currentValue = parseInt(input.value, 10);
+            input.value = (currentValue + 1).toString();
+            saveQuantityToLocalStorage(input);
+        });
+    }
+
+    for (var i = 0; i < quantityInputs.length; i++) {
+        quantityInputs[i].addEventListener("input", function () {
+            var input = this;
+            var currentValue = parseInt(input.value, 10);
+            if (isNaN(currentValue) || currentValue < 1) {
+                input.value = "1";
+            }
+            saveQuantityToLocalStorage(input);
+        });
+    }
+
+    // Функция для восстановления сохраненного значения из Local Storage
+    function restoreQuantityFromLocalStorage(input) {
+        var savedValue = localStorage.getItem("quantity_" + input.getAttribute("data-product-id"));
+        if (savedValue) {
+            input.value = savedValue;
+        }
+    }
+
+    // Восстанавливаем значения из Local Storage при загрузке страницы
+    for (var i = 0; i < quantityInputs.length; i++) {
+        restoreQuantityFromLocalStorage(quantityInputs[i]);
+    }
+</script>
+<script>
+var removeFromCartButtons = document.querySelectorAll(".toggle-cart-link.is-in-cart");
+
+// Добавить обработчик события click для каждой кнопки
+for (var i = 0; i < removeFromCartButtons.length; i++) {
+    removeFromCartButtons[i].addEventListener("click", function (event) {
+        // Предотвратить перехват события скриптом
+        event.stopPropagation();
+
+        var productID = this.getAttribute("data-product-id"); // Получить data-product-id
+
+        // Удалить значение счетчика из Local Storage
+        localStorage.removeItem("quantity_" + productID);
+    });
+}
+</script>
 <script src="{% static 'product/js/jquery-3.4.1.min.js' %}"></script>
 <script src="{% static 'product/js/bootstrap.js' %}"></script>
 </body>
