@@ -397,7 +397,7 @@ a:focus {
 
 /* Стили для главной картинки и маленьких картинок */
 .main-image {
-    max-width: 400px;
+    max-width: 700px;
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -418,8 +418,8 @@ a:focus {
 }
 
 .small-images img {
-    width: 50px;
-    height: 50px;
+    width: 150px;
+    height: 150px;
     aspect-ratio: 1/1;
     object-fit: cover;
     cursor: pointer;
@@ -459,7 +459,7 @@ a:focus {
 .product-actions {
     background-color: #222831;
     display: flex;
-    margin-top: 40%;
+    margin-top: 20%;
 }
 
 /* Стили для значка корзины */
