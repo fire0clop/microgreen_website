@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List account</title>
+</head>
+<body>
+{% if users %}
+    {% for user in users %}
+        <div style="width: 10%; border: 1px solid black; border-radius: 20px; text-align: center">
+            <p>Username: <a href="{% url 'user_details' pk=user.pk %}">{{ user.username }}</a></p>
+            <p>Permissions: {{ user.is_staff }}</p>
+            <a href="{% url 'user-delete' pk=user.pk %}"><img src="{% static 'product/img/rab_red.png' %}" style="width: 20px;"></a>
+            <br>
+        </div>
+
+    {% endfor %}
+{% else %}
+    <h3>Users not found</h3>
+{% endif %}
+</body>
+</html>
