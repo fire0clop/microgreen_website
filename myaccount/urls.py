@@ -1,6 +1,9 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView
-from .views import mainlog, UserListView, DetailsUserView, UpdateUserView, MyLoginView, register, LogoutView, myaccount,OrderListView
+from .views import (mainlog,
+                    UserListView,
+                    DetailsUserView,
+                    UpdateUserView, MyLoginView, register, LogoutView, myaccount,OrderListView, UserDeleteView)
 
 urlpatterns = [
     path('', mainlog, name = 'main_login'),
@@ -11,5 +14,6 @@ urlpatterns = [
     path('user_login/', MyLoginView.as_view(), name ='user_login'),
     path('user_logout/', LogoutView.as_view(), name = 'user_logout'),
     path('user/myaccount/', myaccount, name='my_account'),
-    path('user/myaccount_admin/', OrderListView.as_view(), name='admin_account')
+    path('user/myaccount_admin/', OrderListView.as_view(), name='admin_account'),
+    path('user/<int:pk>/delete/', UserDeleteView.as_view(), name='user-delete'),
 ]

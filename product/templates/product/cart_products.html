@@ -58,14 +58,14 @@
                                 <div class="col">
                                     {% if product.id in request.session.cart %}
                                         <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/rab_red.png' %}"
-                                                             alt="Удалить из корзины" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
+                                            {% csrf_token %}
+                                            <a href="{% url 'toggle_cart' product.id %}"
+                                               class="toggle-cart-link is-in-cart"
+                                               data-product-id="{{ product.id }}">
+                                                <img src="{% static 'product/img/rab_red.png' %}"
+                                                     alt="Удалить из корзины" class="cart_img_catalog">
+                                            </a>
+                                        </form>
                                     {% endif %}
                                 </div>
                             </div>
@@ -254,20 +254,20 @@
     }
 </script>
 <script>
-var removeFromCartButtons = document.querySelectorAll(".toggle-cart-link.is-in-cart");
+    var removeFromCartButtons = document.querySelectorAll(".toggle-cart-link.is-in-cart");
 
-// Добавить обработчик события click для каждой кнопки
-for (var i = 0; i < removeFromCartButtons.length; i++) {
-    removeFromCartButtons[i].addEventListener("click", function (event) {
-        // Предотвратить перехват события скриптом
-        event.stopPropagation();
+    // Добавить обработчик события click для каждой кнопки
+    for (var i = 0; i < removeFromCartButtons.length; i++) {
+        removeFromCartButtons[i].addEventListener("click", function (event) {
+            // Предотвратить перехват события скриптом
+            event.stopPropagation();
 
-        var productID = this.getAttribute("data-product-id"); // Получить data-product-id
+            var productID = this.getAttribute("data-product-id"); // Получить data-product-id
 
-        // Удалить значение счетчика из Local Storage
-        localStorage.removeItem("quantity_" + productID);
-    });
-}
+            // Удалить значение счетчика из Local Storage
+            localStorage.removeItem("quantity_" + productID);
+        });
+    }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>

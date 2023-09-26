@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.views import View
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from ordering.models import Order, Status
 from .forms import UserRegisterForm
@@ -17,8 +17,13 @@ def mainlog(request):
 @method_decorator(staff_member_required, name='dispatch')
 class UserListView(ListView):
     model = User
-    template_name = 'myaccount/user_list.html'
+    template_name = 'myaccount/list_acc.html'
     context_object_name = 'users'
+@method_decorator(staff_member_required, name='dispatch')
+class UserDeleteView(DeleteView):
+    model = User
+    template_name = 'myaccount/user_confirm_delete.html'
+    success_url = reverse_lazy('user_list')
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
