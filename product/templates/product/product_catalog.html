@@ -105,333 +105,91 @@
 <section class="food_section layout_padding-bottom">
     <div class="container">
         <div class="heading_container heading_center">
-            <h2>
-                Наш каталог
-            </h2>
+            <h2>Наш каталог</h2>
         </div>
 
         <ul class="filters_menu">
-            <li class="active" data-filter="*">Все</li>
-            <li data-filter=".burger">Микрозелень</li>
-            <li data-filter=".fries">Бейби-лиф</li>
-            <li data-filter=".pizza">Пищевые цветы</li>
-            <li data-filter=".pasta">Салаты</li>
-
+            <li class="active" data-category="all">Все</li>
+            <li data-category="1">Микрозелень</li>
+            <li data-category="4">Бейби-лиф</li>
+            <li data-category="2">Пищевые цветы</li>
+            <li data-category="3">Салаты</li>
         </ul>
 
+        <div class="row-flex">
+            {% for product in products %}
+                <div class="product {{ product.category.id }}">
+                    <div class="box">
+                        <a href="{% url 'product_detail' pk=product.pk %}">
+                            <div class="img-box">
+                                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+                            </div>
+                        </a>
 
-        <div class="filters-content">
-            <div class="row grid">
-                {% for product in products %}
-                    {% if product.category.id == 2 %}
-
-                        <div class="col-sm-12 col-lg-4 all pizza">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img src="{{ product.main_image.url }}" alt="">
+                        <div class="detail-box">
+                            <h5>
+                                <a href="{% url 'product_detail' pk=product.pk %}"
+                                   style="text-decoration: none; color: inherit;">
+                                    {{ product.name }}
+                                </a>
+                            </h5>
+                            <p>{{ product.description }}</p>
+                            <div class="options">
+                                {% if product.id in request.session.cart %}
+                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_cart' product.id %}" class="toggle-cart-link is-in-cart"
+                                           data-product-id="{{ product.id }}">
+                                            <img src="{% static 'product/img/rab_red.png' %}" alt="Удалить из корзины"
+                                                 class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% else %}
+                                    <b href=""></b>
+                                {% endif %}
+                                {% if product.id in request.session.favorites %}
+                                    <form action="{% url 'toggle_favorite' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_favorite' product.id %}"
+                                           class="toggle-favorite-link is-favorite" data-product-id="{{ product.id }}">
+                                            <img src="{% static 'product/img/heart.png' %}" alt="Удалить из избранного"
+                                                 class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% else %}
+                                    <form action="{% url 'toggle_favorite' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_favorite' product.id %}" class="toggle-favorite-link"
+                                           data-product-id="{{ product.id }}">
+                                            <img src="{% static 'product/img/heart.png' %}" alt="Добавить в избранное"
+                                                 class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% endif %}
+                                {% if product.id in request.session.cart %}
+                                    <div class="product-quantity">
+                                        <button class="quantity-button decrease" data-product-id="{{ product.id }}">-
+                                        </button>
+                                        <input type="number" class="quantity" value="1" min="1"
+                                               data-product-id="{{ product.id }}">
+                                        <button class="quantity-button increase" data-product-id="{{ product.id }}">+
+                                        </button>
                                     </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            <a href="{% url 'product_detail' pk=product.pk %}"
-                                               style="text-decoration: none; color: inherit;">
-                                                {{ product.name }}</a>
-                                        </h5>
-
-                                        <div class="options">
-
-
-                                            {% if product.id in request.session.cart %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/rab_red.png' %}"
-                                                             alt="Удалить из корзины" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <b href=""></b>
-                                            {% endif %}
-                                            {% if product.id in request.session.favorites %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Удалить из избранного" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Добавить в избранное" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                            {% if product.id in request.session.cart %}
-                                                <div class="product-quantity">
-                                                    <button class="quantity-button decrease"
-                                                            data-product-id="{{ product.id }}">-
-                                                    </button>
-                                                    <input type="number"
-                                                           class="quantity" value="1" min="1"
-                                                           data-product-id="{{ product.id }}">
-                                                    <button class="quantity-button increase"
-                                                            data-product-id="{{ product.id }}">+
-                                                    </button>
-                                                </div>
-                                            {% else %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/cart.png' %}"
-                                                             alt="Добавить в корзину" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
+                                {% else %}
+                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_cart' product.id %}" class="toggle-cart-link"
+                                           data-product-id="{{ product.id }}">
+                                            <img src="{% static 'product/img/cart.png' %}" alt="Добавить в корзину"
+                                                 class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
-                    {% elif product.category.id == 1 %}
-                        <div class="col-sm-12 col-lg-4 all burger">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img src="{{ product.main_image.url }}" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            <a href="{% url 'product_detail' pk=product.pk %}"
-                                               style="text-decoration: none; color: inherit;">
-                                                {{ product.name }}</a>
-                                        </h5>
-
-                                        <div class="options">
-
-                                            {% if product.id in request.session.cart %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/rab_red.png' %}"
-                                                             alt="Удалить из корзины" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <b href=""></b>
-                                            {% endif %}
-                                            {% if product.id in request.session.favorites %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Удалить из избранного" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Добавить в избранное" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                            {% if product.id in request.session.cart %}
-                                                <div class="product-quantity">
-                                                    <button class="quantity-button decrease"
-                                                            data-product-id="{{ product.id }}">-
-                                                    </button>
-                                                    <input type="number"
-                                                           class="quantity" value="1" min="1"
-                                                           data-product-id="{{ product.id }}">
-                                                    <button class="quantity-button increase"
-                                                            data-product-id="{{ product.id }}">+
-                                                    </button>
-                                                </div>
-                                            {% else %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/cart.png' %}"
-                                                             alt="Добавить в корзину" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% elif product.category.id == 3 %}
-                        <div class="col-sm-12 col-lg-4 all pasta">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img src="{{ product.main_image.url }}" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            <a href="{% url 'product_detail' pk=product.pk %}"
-                                               style="text-decoration: none; color: inherit;">
-                                                {{ product.name }}</a>
-                                        </h5>
-
-                                        <div class="options">
-
-                                            {% if product.id in request.session.cart %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/rab_red.png' %}"
-                                                             alt="Удалить из корзины" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <b href=""></b>
-                                            {% endif %}
-                                            {% if product.id in request.session.favorites %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Удалить из избранного" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Добавить в избранное" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                            {% if product.id in request.session.cart %}
-                                                <div class="product-quantity">
-                                                    <button class="quantity-button decrease"
-                                                            data-product-id="{{ product.id }}">-
-                                                    </button>
-                                                    <input type="number"
-                                                           class="quantity" value="1" min="1"
-                                                           data-product-id="{{ product.id }}">
-                                                    <button class="quantity-button increase"
-                                                            data-product-id="{{ product.id }}">+
-                                                    </button>
-                                                </div>
-                                            {% else %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/cart.png' %}"
-                                                             alt="Добавить в корзину" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% elif product.category.id == 4 %}
-                        <div class="col-sm-12 col-lg-4 all fries">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <img src="{{ product.main_image.url }}" alt="">
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            <a href="{% url 'product_detail' pk=product.pk %}"
-                                               style="text-decoration: none; color: inherit;">
-                                                {{ product.name }}</a>
-                                        </h5>
-
-                                        <div class="options">
-
-                                            {% if product.id in request.session.cart %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/rab_red.png' %}"
-                                                             alt="Удалить из корзины" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <b href=""></b>
-                                            {% endif %}
-                                            {% if product.id in request.session.favorites %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Удалить из избранного" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Добавить в избранное" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                            {% if product.id in request.session.cart %}
-                                                <div class="product-quantity">
-                                                    <button class="quantity-button decrease"
-                                                            data-product-id="{{ product.id }}">-
-                                                    </button>
-                                                    <input type="number"
-                                                           class="quantity" value="1" min="1"
-                                                           data-product-id="{{ product.id }}">
-                                                    <button class="quantity-button increase"
-                                                            data-product-id="{{ product.id }}">+
-                                                    </button>
-                                                </div>
-                                            {% else %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/cart.png' %}"
-                                                             alt="Добавить в корзину" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -466,7 +224,8 @@
                         Microgreen
                     </a>
                     <p>
-                        Какое-нибудь описание для компании
+                        Мы выращиваем и предлагаем широкий ассортимент микрозелени и ярких цветков, чтобы обогатить ваши
+                        блюда вкусом, ароматом и эстетикой
                     </p>
                     <div class="footer_social">
                         <a href="">
@@ -506,10 +265,7 @@
 </footer>
 <script src="{% static 'product/js/jquery-3.4.1.min.js' %}"></script>
 <script src="{% static 'product/js/bootstrap.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
-<script src="{% static 'product/js/custom.js' %}"></script>
+{#скрипт для восстановления прокрутки#}
 <script>
     // Обработчик щелчка по кнопке "Добавить в избранное"
     document.querySelectorAll('.toggle-favorite-link').forEach(function (link) {
@@ -559,11 +315,11 @@
     function resetScrollPositionAfterDelay() {
         setTimeout(function () {
             sessionStorage.removeItem('scroll_position');
-        }, 1000); // 6 секунд задержки
+        }, 40000); // 6 секунд задержки
     }
 </script>
 
-
+{#скрипт для отображения сообщений#}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var autoHideMessages = document.querySelectorAll('.auto-hide');
@@ -582,6 +338,7 @@
         }
     });
 </script>
+{#скрипт для управления счетчиками#}
 <script>
     // JavaScript для управления счетчиками
     var decreaseButtons = document.querySelectorAll(".decrease");
@@ -640,22 +397,61 @@
         restoreQuantityFromLocalStorage(quantityInputs[i]);
     }
 </script>
+{#скрипт для перехвата клика при наличия счетчика для удаления продукта из корзины#}
 <script>
-var removeFromCartButtons = document.querySelectorAll(".toggle-cart-link.is-in-cart");
+    var removeFromCartButtons = document.querySelectorAll(".toggle-cart-link.is-in-cart");
 
-// Добавить обработчик события click для каждой кнопки
-for (var i = 0; i < removeFromCartButtons.length; i++) {
-    removeFromCartButtons[i].addEventListener("click", function (event) {
-        // Предотвратить перехват события скриптом
-        event.stopPropagation();
+    // Добавить обработчик события click для каждой кнопки
+    for (var i = 0; i < removeFromCartButtons.length; i++) {
+        removeFromCartButtons[i].addEventListener("click", function (event) {
+            // Предотвратить перехват события скриптом
+            event.stopPropagation();
 
-        var productID = this.getAttribute("data-product-id"); // Получить data-product-id
+            var productID = this.getAttribute("data-product-id"); // Получить data-product-id
 
-        // Удалить значение счетчика из Local Storage
-        localStorage.removeItem("quantity_" + productID);
-    });
-}
+            // Удалить значение счетчика из Local Storage
+            localStorage.removeItem("quantity_" + productID);
+        });
+    }
 </script>
+{#скрипт для фильтра по категориям#}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var filterButtons = document.querySelectorAll('.filters_menu li');
+        var products = document.querySelectorAll('.product');
+
+        filterButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // Убираем класс "active" у всех кнопок
+                filterButtons.forEach(function (btn) {
+                    btn.classList.remove('active');
+                });
+
+                // Добавляем класс "active" только для выбранной кнопки
+                button.classList.add('active');
+
+                // Получаем категорию выбранной кнопки
+                var category = button.getAttribute('data-category');
+
+                products.forEach(function (product) {
+                    // Если выбрана категория "Все" или продукт принадлежит категории
+                    if (category === 'all' || product.classList.contains(category)) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // При загрузке страницы активируем кнопку "Все"
+        var allButton = document.querySelector('.filters_menu li[data-category="all"]');
+        if (allButton) {
+            allButton.click();
+        }
+    });
+</script>
+
 
 </body>
 </html>

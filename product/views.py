@@ -2,19 +2,34 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from .models import Product, ProductImage
 from .forms import ProductForm, ProductImageForm
-from myaccount.models import Profile
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from ordering.forms import OrderForm
 from ordering.models import OrderItem, Order, Status
+
+
 class MainPage(ListView):
     model = Product
     template_name = 'product/main_page.html'
     context_object_name = 'products'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        favorites = self.request.session.get('favorites', [])
+        favorites_products = Product.objects.filter(id__in=favorites)
+
+        cart = self.request.session.get('cart', [])
+        cart_products = Product.objects.filter(id__in=cart)
+
+        context['cart_products'] = cart_products
+        context['favorites_products'] = favorites_products
+
+        return context
 def toggle_favorite(request, product_id):
     # Получите текущую сессию пользователя
     session_key = request.session.session_key
@@ -164,7 +179,7 @@ class ProductDetailView(DetailView):
 
         return context
 
-@method_decorator(staff_member_required, name='dispatch')
+@staff_member_required
 def delete_image(request, pk):
     image = get_object_or_404(ProductImage, pk=pk)
     product = image.product
@@ -203,5 +218,18 @@ class ProductCatalog(ListView):
     template_name = 'product/product_catalog.html'
     model = Product
     context_object_name = 'products'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        favorites = self.request.session.get('favorites', [])
+        favorites_products = Product.objects.filter(id__in=favorites)
+
+        cart = self.request.session.get('cart', [])
+        cart_products = Product.objects.filter(id__in=cart)
+
+        context['cart_products'] = cart_products
+        context['favorites_products'] = favorites_products
+
+        return context
 
 

@@ -97,54 +97,65 @@
 <section class="offer_section layout_padding-bottom">
     <div class="offer_container">
         <div class="container ">
-            <div style="text-align: center">
-                <h2><strong>Топ по популярности</strong></h2>
-            </div>
-            <div class="row">
+            <div class="main">
+                <ul class="cards">
+                    <li class="cards_item">
+                        <div class="card">
+                            <div class="card_image"><img
+                                    src="https://assets.codepen.io/652/photo-1468777675496-5782faaea55b.jpeg"
+                                    alt="mixed vegetable salad in a mason jar. "></div>
+                            <div class="card_content">
+                                <h2 class="card_title">Салаты</h2>
+                                <div class="card_text">
+                                    <p>&#x2022; Микрозелень гороха прекрасно дополнит салат с фетой и мятой. Её нежный
+                                        вкус и
+                                        хрустящая текстура добавят интересный контраст к соленому и свежему вкусу феты,
+                                        а также освежающему аромату мяты.</p>
+                                    <p>&#x2022; Попробуйте микрозелень рукколы в салатах с красными огурцами и
+                                        черри-томатами. Её
+                                        легкий острый вкус и аромат придают салату дополнительную пикантность.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
 
-                <div class="col-md-6  ">
-                    <div class="box ">
-                        {% for product in products %}
-                            {% if product.id == 30 %}
-
-                                <div class="img-box">
-                                    <img href='{% url 'product_detail' pk=product.pk %}'
-                                         src="{{ product.main_image.url }}" alt="">
+                    <li class="cards_item">
+                        <div class="card">
+                            <div class="card_image"><img
+                                    src="https://assets.codepen.io/652/photo-1520174691701-bc555a3404ca.jpeg"
+                                    alt="a Reuben sandwich on wax paper. "></div>
+                            <div class="card_content">
+                                <h2 class="card_title">Гарниры</h2>
+                                <div class="card_text">
+                                    <p>&#x2022; Микрозелень базилика идеально подходит в качестве гарнира для пасты, особенно для
+                                        блюд с томатным или песто-соусом. Её ароматный вкус и аромат красиво дополнят
+                                        блюдо.
+                                    </p>
+                                    <p>&#x2022; Микрозелень горчицы можно использовать как гарнир для блюд с грибами, например,
+                                        шампиньонами, приготовленными на гриле. Её острый вкус добавит интересный акцент
+                                        к нежному вкусу грибов.</p>
                                 </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        {{ product.name }}
-                                    </h5>
-                                    <br>
-                                    <a href="{% url 'product_detail' pk=product.pk %}">
-                                        Детали
-                                    </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="cards_item">
+                        <div class="card">
+                            <div class="card_image"><img
+                                    src="https://assets.codepen.io/652/photo-1544510808-91bcbee1df55.jpeg"
+                                    alt="A side view of a plate of figs and berries. "></div>
+                            <div class="card_content">
+                                <h2 class="card_title">Дополнения к блюдам</h2>
+                                <div class="card_text">
+                                    <p>&#x2022; Добавьте микрозелень гороха в супы и кремы. Небольшое количество микрозелени на
+                                        поверхности блюда придаст ему нежный вид и приятный зеленый акцент.</p>
+                                    <p>&#x2022; При подаче мясных блюд, таких как стейк или жаренная куриная грудка, микрозелень
+                                        горчицы может быть прекрасным украшением. Положите несколько веточек на вершину
+                                        мяса перед подачей.</p>
                                 </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="col-md-6  ">
-                    <div class="box ">
-                        {% for product in products %}
-                            {% if product.id == 60 %}
-                                <div class="img-box">
-                                    <img href='{% url 'product_detail' pk=product.pk %}'
-                                         src="{{ product.main_image.url }}" alt="">
-                                </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        {{ product.name }}
-                                    </h5>
-                                    <br>
-                                    <a href="{% url 'product_detail' pk=product.pk %}">
-                                        Детали
-                                    </a>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -152,420 +163,150 @@
 <section class="food_section layout_padding-bottom">
     <div class="container">
         <div class="heading_container heading_center">
-            <h2>
-                Наш каталог
-            </h2>
+            <h2>Наш каталог</h2>
         </div>
 
         <ul class="filters_menu">
-            <li class="active" data-filter=".all">Все</li>
-            <li data-filter=".burger">Микрозелень</li>
-            <li data-filter=".fries">Бейби-лиф</li>
-            <li data-filter=".pizza">Пищевые цветы</li>
-            <li data-filter=".pasta">Салаты</li>
-
+            <li class="active" data-category="all">Все</li>
+            <li data-category="1">Микрозелень</li>
+            <li data-category="4">Бейби-лиф</li>
+            <li data-category="2">Пищевые цветы</li>
+            <li data-category="3">Салаты</li>
         </ul>
 
+        <div class="row-flex">
+            {% for product in products %}
+                <div class=" product {{ product.category.id }}">
+                    <div class="box">
+                        <a href="{% url 'product_detail' pk=product.pk %}">
+                            <div class="img-box">
+                                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+                            </div>
+                        </a>
 
-        <div class="filters-content">
-            <div class="row grid">
-                {% for product in products %}
-                    {% if product.category.id == 1 %}
-                        <div class="col-sm-12 col-lg-4 all burger">
-                            <div class="box">
-                                <div>
-                                    <a href='{% url 'product_detail' pk=product.pk %}'>
-                                        <div class="img-box">
-                                            <img src="{{ product.main_image.url }}" alt="">
-                                        </div>
-                                    </a>
-                                    <div class="detail-box">
-                                        <h5>
-                                            <a href="{% url 'product_detail' pk=product.pk %}"
-                                               style="text-decoration: none; color: inherit;">
-                                                {{ product.name }}</a>
-                                        </h5>
-
-                                        <div class="options">
-
-                                            {% if product.id in request.session.cart %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/rab_red.png' %}"
-                                                             alt="Удалить из корзины" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <b href=""></b>
-                                            {% endif %}
-                                            {% if product.id in request.session.favorites %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Удалить из избранного" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Добавить в избранное" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                            {% if product.id in request.session.cart %}
-                                                <div class="product-quantity">
-                                                    <button class="quantity-button decrease"
-                                                            data-product-id="{{ product.id }}">-
-                                                    </button>
-                                                    <input type="number"
-                                                           class="quantity" value="1" min="1"
-                                                           data-product-id="{{ product.id }}">
-                                                    <button class="quantity-button increase"
-                                                            data-product-id="{{ product.id }}">+
-                                                    </button>
-                                                </div>
-                                            {% else %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/cart.png' %}"
-                                                             alt="Добавить в корзину" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                        </div>
+                        <div class="detail-box">
+                            <h5>
+                                <a href="{% url 'product_detail' pk=product.pk %}"
+                                   style="text-decoration: none; color: inherit;">
+                                    {{ product.name }}
+                                </a>
+                            </h5>
+                            <p>{{ product.description }}</p>
+                            <div class="options">
+                                {% if product.id in request.session.cart %}
+                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_cart' product.id %}" class="toggle-cart-link is-in-cart"
+                                           data-product-id="{{ product.id }}">
+                                            <img src="{% static 'product/img/rab_red.png' %}" alt="Удалить из корзины"
+                                                 class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% else %}
+                                    <b href=""></b>
+                                {% endif %}
+                                {% if product.id in request.session.favorites %}
+                                    <form action="{% url 'toggle_favorite' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_favorite' product.id %}"
+                                           class="toggle-favorite-link is-favorite" data-product-id="{{ product.id }}">
+                                            <img src="{% static 'product/img/heart.png' %}" alt="Удалить из избранного"
+                                                 class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% else %}
+                                    <form action="{% url 'toggle_favorite' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_favorite' product.id %}" class="toggle-favorite-link"
+                                           data-product-id="{{ product.id }}">
+                                            <img src="{% static 'product/img/heart.png' %}" alt="Добавить в избранное"
+                                                 class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% endif %}
+                                {% if product.id in request.session.cart %}
+                                    <div class="product-quantity">
+                                        <button class="quantity-button decrease" data-product-id="{{ product.id }}">-
+                                        </button>
+                                        <input type="number" class="quantity" value="1" min="1"
+                                               data-product-id="{{ product.id }}">
+                                        <button class="quantity-button increase" data-product-id="{{ product.id }}">+
+                                        </button>
                                     </div>
-                                </div>
+                                {% else %}
+                                    <form action="{% url 'toggle_cart' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{% url 'toggle_cart' product.id %}" class="toggle-cart-link"
+                                           data-product-id="{{ product.id }}">
+                                            <img src="{% static 'product/img/cart.png' %}" alt="Добавить в корзину"
+                                                 class="cart_img_catalog">
+                                        </a>
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
-
-
-                    {% elif product.category.id == 4 %}
-                        <div class="col-sm-12 col-lg-4 all fries">
-                            <div class="box">
-                                <div>
-                                    <a href='{% url 'product_detail' pk=product.pk %}'>
-                                        <div class="img-box">
-                                            <img src="{{ product.main_image.url }}" alt="">
-                                        </div>
-                                    </a>
-                                    <div class="detail-box">
-                                        <h5>
-                                            <a href="{% url 'product_detail' pk=product.pk %}"
-                                               style="text-decoration: none; color: inherit;">
-                                                {{ product.name }}</a>
-                                        </h5>
-                                        <div class="options">
-
-                                            {% if product.id in request.session.cart %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/rab_red.png' %}"
-                                                             alt="Удалить из корзины" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <b href=""></b>
-                                            {% endif %}
-                                            {% if product.id in request.session.favorites %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Удалить из избранного" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Добавить в избранное" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                            {% if product.id in request.session.cart %}
-                                                <div class="product-quantity">
-                                                    <button class="quantity-button decrease"
-                                                            data-product-id="{{ product.id }}">-
-                                                    </button>
-                                                    <input type="number"
-                                                           class="quantity" value="1" min="1"
-                                                           data-product-id="{{ product.id }}">
-                                                    <button class="quantity-button increase"
-                                                            data-product-id="{{ product.id }}">+
-                                                    </button>
-                                                </div>
-                                            {% else %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/cart.png' %}"
-                                                             alt="Добавить в корзину" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    {% elif product.category.id == 2 %}
-                        <div class="col-sm-12 col-lg-4 all pizza">
-                            <div class="box">
-                                <div>
-                                    <a href="{% url 'product_detail' pk=product.pk %}">
-                                        <div class="img-box">
-                                            <img src="{{ product.main_image.url }}" alt="">
-                                        </div>
-                                    </a>
-                                    <div class="detail-box">
-                                        <h5>
-                                            <a href="{% url 'product_detail' pk=product.pk %}"
-                                               style="text-decoration: none; color: inherit;">
-                                                {{ product.name }}</a>
-                                        </h5>
-
-                                        <div class="options">
-
-
-                                            {% if product.id in request.session.cart %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/rab_red.png' %}"
-                                                             alt="Удалить из корзины" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <b href=""></b>
-                                            {% endif %}
-                                            {% if product.id in request.session.favorites %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Удалить из избранного" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Добавить в избранное" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                            {% if product.id in request.session.cart %}
-                                                <div class="product-quantity">
-                                                    <button class="quantity-button decrease"
-                                                            data-product-id="{{ product.id }}">-
-                                                    </button>
-                                                    <input type="number"
-                                                           class="quantity" value="1" min="1"
-                                                           data-product-id="{{ product.id }}">
-                                                    <button class="quantity-button increase"
-                                                            data-product-id="{{ product.id }}">+
-                                                    </button>
-                                                </div>
-                                            {% else %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/cart.png' %}"
-                                                             alt="Добавить в корзину" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% elif product.category.id == 3 %}
-                        <div class="col-sm-12 col-lg-4 all pasta">
-                            <div class="box">
-                                <div>
-                                    <a href="{% url 'product_detail' pk=product.pk %}">
-                                    <div class="img-box">
-                                        <img
-                                             src="{{ product.main_image.url }}" alt="">
-                                    </div>
-                                    </a>
-                                    <div class="detail-box">
-                                        <h5>
-                                            <a href="{% url 'product_detail' pk=product.pk %}"
-                                               style="text-decoration: none; color: inherit;">
-                                                {{ product.name }}</a>
-                                        </h5>
-
-                                        <div class="options">
-
-                                            {% if product.id in request.session.cart %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link is-in-cart"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/rab_red.png' %}"
-                                                             alt="Удалить из корзины" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <b href=""></b>
-                                            {% endif %}
-                                            {% if product.id in request.session.favorites %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link is-favorite"
-                                                       data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Удалить из избранного" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% else %}
-                                                <form action="{% url 'toggle_favorite' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_favorite' product.id %}"
-                                                       class="toggle-favorite-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/heart.png' %}"
-                                                             alt="Добавить в избранное" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                            {% if product.id in request.session.cart %}
-                                                <div class="product-quantity">
-                                                    <button class="quantity-button decrease"
-                                                            data-product-id="{{ product.id }}">-
-                                                    </button>
-                                                    <input type="number"
-                                                           class="quantity" value="1" min="1"
-                                                           data-product-id="{{ product.id }}">
-                                                    <button class="quantity-button increase"
-                                                            data-product-id="{{ product.id }}">+
-                                                    </button>
-                                                </div>
-                                            {% else %}
-                                                <form action="{% url 'toggle_cart' product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <a href="{% url 'toggle_cart' product.id %}"
-                                                       class="toggle-cart-link" data-product-id="{{ product.id }}">
-                                                        <img src="{% static 'product/img/cart.png' %}"
-                                                             alt="Добавить в корзину" class="cart_img_catalog">
-                                                    </a>
-                                                </form>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </section>
-<section class="about_section layout_padding">
-    <div class="container  ">
-        <div class="row">
-            <div class="col-md-6 ">
-                <div class="img-box">
-                    <img src="{% static 'product/img/micro_about.png' %}" alt="">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="detail-box">
-                    <div class="heading_container">
-                        <h2>
-                            Салат из Микрозелени: Новый Вкус Свежести
-                        </h2>
-                    </div>
-                    <div>
-                        <p style="padding-left: 10px; ">
-                            Откройте для себя уникальное сочетание микрозелени, включая горох, подсолнух, редиску и
-                            капусту фиолетовую. Наши бутоны микрозелени обогатят ваши блюда свежестью и неповторимым
-                            вкусом.
-                        </p>
-                        <hr style="border-color: white; width: 40%; margin: 10px 40px;">
-                        <div style="padding-left: 15px">
-                            <li>
-                                <strong>Свежесть и Качество:</strong> Наша микрозелень растет с заботой о качестве,
-                                чтобы вы могли
-                                наслаждаться непревзойденным вкусом.
-                            </li>
-                            <li>
-                                <strong>Уникальный Вкус:</strong>
-                                Придайте вашим блюдам характер и нотку роскоши с нашей микрозеленью.
-                            </li>
-                            <li>
-                                <strong>Здоровье и Питательность:</strong> Микрозелень богата витаминами и
-                                микроэлементами, делая ваше
-                                питание полезным и вкусным.
-                            </li>
-                        </div>
-                        <hr style="border-color: white; width: 40%; margin: 10px 40px;">
-                        <p>
-                            Добавьте магию свежести в свои блюда с нашим салатом из микрозелени. Попробуйте прямо
-                            сейчас!
-                        </p>
-                    </div>
-                    <a href="{% url 'product_detail' pk=8 %}">
-                        Больше здесь
-                    </a>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<div style="margin: 200px 0px 50px;" class="heading_container heading_center">
+    <h2>О нас</h2>
+</div>
 <section id="about_inform" class="section_about_inform">
-    <div class="inform_about">
-        <div class="inform_text">
-            <h3 class="first_inform">СОТРУДНИЧЕСТВО С РЕСТОРАНАМИ, КАФЕ И БАРАМИ</h3>
-            <hr style="width: 30%;">
-            <br>
-            <h4 class="second_inform">осуществляет оптовые и розничные продажи микрозелени, бэби зелени и съедобных
-                цветов для
-                предприятий сферы гостеприимства, общественного питания, фитнес индустрии и тд. Мы приглашаем к
-                сотрудничеству компании, работающие в области HoReCa – отели, рестораны, кафе, бары. В сфере фитнеса –
-                спортивные залы, танцевальные и йога студии.</h4>
-            <br><br>
-            <p>Напишите нам на Whats app или позвоните по номеру ниже и мы с радостью поможем вам!</p>
+    <div class="sector-inner">
+        <div class="top">
+            <div class="left">
+                <!-- Левый блок -->
+                <div class="block">
+                    <strong>
+                        Привезем образцы на оценку
+                    </strong>
+                </div>
+                <div class="block">
+                    <strong>Самостоятельно доставим ваш заказ!</strong>
+                </div>
+                <div class="block">
+                    <strong>Всегда только свежий продукт</strong>
+                </div>
+                <div class="block">
+                    <strong>Мы предлагаем широкий ассортимент</strong>
+                </div>
+            </div>
+            <div class="right">
+                <!-- Правый блок -->
+                <div class="block_5">
+                    <strong>
+                        Качество
+                    </strong>
+                    <hr style="border-color: #ffbe33;">
+                    <p>
+                        Наши технологии позволяют производить микрозелень и цветы высокого качества
+                    </p>
+                    <img src="{% static 'product/img/Quality.png' %}" alt="">
+                </div>
+                <div class="block_6">
+                    <strong>
+                        Коммуникабельность
+                    </strong>
+                    <hr style="border-color: #ffbe33;">
+                    <p>
+                        Мы стараемся быстро реагировать на фитбеки и готовы ответить на любой ваш вопрос
+                    </p>
+                    <img src="{% static 'product/img/Chat.png' %}" alt="">
+                </div>
+            </div>
         </div>
-        <div class="inform_tele">
-            <p>
-                +79271057003
-            </p>
+        <div class="bottom">
+            <strong>Есть дополнительные вопросы?</strong>
+            <p>Звоните/пишите на Whats app по номеру:</p>
+            <p style="background-color: #222831; width: 40%; padding:2px; border-radius: 10px; margin: 10px auto; color: #ffbe33;">
+                +7(922)469-31-19</p>
         </div>
-    </div>
+
 </section>
+<br><br><br>
 <footer class="footer_section">
     <div class="container">
         <div class="row">
@@ -597,7 +338,8 @@
                         Microgreen
                     </a>
                     <p>
-                        Какое-нибудь описание для компании
+                        Мы выращиваем и предлагаем широкий ассортимент микрозелени и ярких цветков, чтобы обогатить ваши
+                        блюда вкусом, ароматом и эстетикой
                     </p>
                     <div class="footer_social">
                         <a href="">
@@ -690,7 +432,7 @@
     function resetScrollPositionAfterDelay() {
         setTimeout(function () {
             sessionStorage.removeItem('scroll_position');
-        }, 1000); // 6 секунд задержки
+        }, 40000); // 6 секунд задержки
     }
 </script>
 <script>
@@ -784,6 +526,43 @@
             localStorage.removeItem("quantity_" + productID);
         });
     }
+</script>
+{#скрипт для фильтра по категориям#}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var filterButtons = document.querySelectorAll('.filters_menu li');
+        var products = document.querySelectorAll('.product');
+
+        filterButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // Убираем класс "active" у всех кнопок
+                filterButtons.forEach(function (btn) {
+                    btn.classList.remove('active');
+                });
+
+                // Добавляем класс "active" только для выбранной кнопки
+                button.classList.add('active');
+
+                // Получаем категорию выбранной кнопки
+                var category = button.getAttribute('data-category');
+
+                products.forEach(function (product) {
+                    // Если выбрана категория "Все" или продукт принадлежит категории
+                    if (category === 'all' || product.classList.contains(category)) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // При загрузке страницы активируем кнопку "Все"
+        var allButton = document.querySelector('.filters_menu li[data-category="all"]');
+        if (allButton) {
+            allButton.click();
+        }
+    });
 </script>
 </body>
 </html>

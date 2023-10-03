@@ -8,7 +8,7 @@ class UserRegisterForm(UserCreationForm):
     company_name = forms.CharField(max_length=100)
     phone = forms.CharField(
         max_length=12,
-        min_length=12,  # Минимальная длина номера телефона
+        min_length=12,
         validators=[MinLengthValidator(limit_value=12, message="Номер телефона введен не правильно")]
     )
 
@@ -19,6 +19,16 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'company_name', 'phone', 'password1', 'password2']
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        try:
+            User.objects.get(username=username)
+            raise forms.ValidationError('Введенная почта уже зарегистрирована')
+        except User.DoesNotExist:
+            return username
+
+
 
 
 class ChangeOrderStatusForm(forms.Form):

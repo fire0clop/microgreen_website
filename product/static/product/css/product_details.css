@@ -128,10 +128,6 @@ a:focus {
     padding: 0;
 }
 
-.custom_nav-container .navbar-nav {
-    padding-left: 18%;
-}
-
 .custom_nav-container .navbar-nav .nav-item .nav-link {
     padding: 5px 20px;
     color: #ffffff;
@@ -154,11 +150,11 @@ a:focus {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
 }
 
 .user_option a {
-    margin: 0 10px;
+    margin: 5px 15px;
 }
 
 .user_option .user_link {
@@ -191,7 +187,7 @@ a:focus {
 
 .custom_nav-container .navbar-toggler {
     padding: 0;
-    width: 37px;
+    width: 45px;
     height: 42px;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
@@ -199,8 +195,8 @@ a:focus {
 
 .custom_nav-container .navbar-toggler span {
     display: block;
-    width: 35px;
-    height: 4px;
+    width: 45px;
+    height: 5px;
     background-color: #ffffff;
     margin: 7px 0;
     -webkit-transition: all 0.3s;
@@ -217,14 +213,14 @@ a:focus {
     height: 100%;
     width: 100%;
     background-color: #ffffff;
-    top: -10px;
+    top: -15px;
     border-radius: 5px;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
 }
 
 .custom_nav-container .navbar-toggler span::after {
-    top: 10px;
+    top: 15px;
 }
 
 .custom_nav-container .navbar-toggler[aria-expanded="true"] {
@@ -363,7 +359,7 @@ a:focus {
     display: flex;
     flex-direction: row;
     background-color: #222831;
-    width: 60%;
+    width: 70%;
     margin: 0 auto;
 }
 
@@ -397,11 +393,12 @@ a:focus {
 
 /* Стили для главной картинки и маленьких картинок */
 .main-image {
-    max-width: 700px;
+    max-width: 500px;
     width: 100%;
     position: relative;
     overflow: hidden;
 }
+
 
 .main-image img {
     width: 100%;
@@ -418,8 +415,8 @@ a:focus {
 }
 
 .small-images img {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     aspect-ratio: 1/1;
     object-fit: cover;
     cursor: pointer;
@@ -442,9 +439,10 @@ a:focus {
 }
 
 .product-description {
-    font-size: 16px;
+    font-size: 20px;
     margin-bottom: 20px;
 }
+
 
 /* Стили для кнопок "Add to Cart" и "Add to Favorites" */
 .product-actions button {
@@ -459,7 +457,7 @@ a:focus {
 .product-actions {
     background-color: #222831;
     display: flex;
-    margin-top: 20%;
+    margin-top: 50%;
 }
 
 /* Стили для значка корзины */
@@ -612,7 +610,7 @@ a:focus {
     /* При разрешении экрана меньше или равном 768px, измените направление флекс-контейнера на колонку */
     .content_detail {
         flex-direction: column;
-        width: 80%;
+        width: 99%;
     }
 
     /* При разрешении экрана меньше или равном 768px, измените порядок дивов */
@@ -703,6 +701,10 @@ a:focus {
         height: 60px;
     }
 
+    .product-actions {
+        margin-top: 20%;
+    }
+
     .product-title {
         font-size: 64px;
     }
@@ -741,7 +743,7 @@ a:focus {
     }
 
     li {
-        font-size: 27px;
+        font-size: 32px;
     }
 
     .cart_img_catalog {
@@ -769,8 +771,20 @@ a:focus {
 
     .cart_img_catalog {
 
-        width: 55px;
-        height: 55px;
+        width: 60px;
+        height: 60px;
     }
 
+    .main-image {
+
+        max-width: 900px;
+    }
+
+    .small-images img {
+
+        width: 150px;
+        height: 150px;
+
+
+    }
 }

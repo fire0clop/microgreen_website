@@ -127,6 +127,12 @@ select {
     background-color: rgb(247, 247, 247);
 }
 
+.button_select {
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px
+}
+
 input {
     border: 1px solid rgba(0, 0, 0, 0.137);
     padding: 1vh;
@@ -140,30 +146,6 @@ input:focus::-webkit-input-placeholder {
     color: transparent;
 }
 
-.btn {
-    background-color: #000;
-    border-color: #000;
-    color: white;
-    width: 100%;
-    font-size: 0.7rem;
-    margin-top: 4vh;
-    padding: 1vh;
-    border-radius: 0;
-}
-
-.btn:focus {
-    box-shadow: none;
-    outline: none;
-    box-shadow: none;
-    color: white;
-    -webkit-box-shadow: none;
-    -webkit-user-select: none;
-    transition: none;
-}
-
-.btn:hover {
-    color: white;
-}
 
 a {
     color: black;
@@ -214,10 +196,11 @@ a:hover {
     width: 25px;
     height: 25px;
 }
+
 .messages_sucs {
     background-color: rgba(0, 0, 0, 0.7);
     width: 13%;
-    height:auto;
+    height: auto;
     right: 1%; /* Вы можете настроить правильное значение в соответствии с вашим дизайном */
     top: 2%; /* Вы можете настроить правильное значение в соответствии с вашим дизайном */
     color: white;
@@ -232,23 +215,89 @@ a:hover {
     font-size: 15px;
     padding: 12px;
 }
+
 @media (min-width: 768px) {
     .container {
         max-width: 720px;
         max-width: 1020px !important;
     }
 }
+
 @media (max-width: 991px) {
-                /*message*/
+    /*message*/
     .messages_sucs {
         width: 25%;
 
     }
-    .messages_sucs p {
-    font-size: 24px;
-    }
 
-    .count_numb{
+    .messages_sucs p {
         font-size: 24px;
     }
+
+    .count_numb {
+        font-size: 24px;
+    }
+
+    /*cart*/
+    .title b {
+        font-size: 2.5rem;
+    }
+
+    .cart_img_catalog {
+        width: 40px;
+        height: 40px;
+    }
+
+    .text-muted {
+        font-size: 25px;
+    }
+
+    .product-name {
+        font-size: 30px;
+    }
+
+    .count_box {
+        font-size: 25px;
+    }
+
+    .img-fluid {
+        width: 120px;
+        height: 120px;
+    }
+
+    .h5_d {
+        font-size: 2.5rem;
+    }
+
+    p {
+        font-size: 20px;
+    }
+
+    .question_img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .text-muted {
+        font-size: 25px;
+        font-size: 28px;
+    }
+
+    .placeh {
+        font-size: 24px;
+    }
+
+    .back-to-shop {
+        font-size: 35px;
+    }
+
+    .button_select {
+        width: 270px;
+        height: 80px;
+        font-size: 25px;
+    }
+    #message-container p {
+
+font-size: 25px;
+}
 }

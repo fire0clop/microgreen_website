@@ -21,12 +21,12 @@ $(window).on('load', function () {
     });
 
     var $grid = $(".grid").isotope({
-        itemSelector: ".all",
-        percentPosition: false,
-        masonry: {
-            columnWidth: ".all"
-        }
-    })
+    itemSelector: ".all",
+    percentPosition: true, // Используйте true
+    masonry: {
+        columnWidth: ".all"
+    }
+});
 });
 
 // nice select

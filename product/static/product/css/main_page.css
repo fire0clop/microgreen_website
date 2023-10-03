@@ -16,7 +16,6 @@ body {
 }
 
 
-
 .heading_container {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -44,6 +43,22 @@ body {
 .heading_container p {
     margin-top: 10px;
     margin-bottom: 0;
+}
+
+.row-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Равномерно распределять элементы по ширине */
+}
+
+.product {
+    flex-basis: calc(33.33% - 20px); /* Ширина карточки продукта с учетом отступов между ними */
+    margin-right: 10px; /* Отступ между карточками */
+}
+
+/* Удалите отступ справа для последней карточки */
+.product:last-child {
+    margin-right: 0;
 }
 
 .heading_container.heading_center {
@@ -102,7 +117,6 @@ a:focus {
 }
 
 
-
 .navbar-brand span {
     font-weight: bold;
     font-size: 32px;
@@ -141,11 +155,12 @@ a:focus {
 }
 
 .user_option a {
-    margin: 0 10px;
+    margin: 5px 15px;
 }
 
 .section_about_inform {
-    margin: 200px auto;
+    background-color: #efefef;
+    height: 600px;
 }
 
 .inform_about {
@@ -153,7 +168,6 @@ a:focus {
     padding: 100px 200px;
     text-align: center;
 }
-
 
 
 .second_inform {
@@ -225,7 +239,7 @@ a:focus {
 
 .custom_nav-container .navbar-toggler {
     padding: 0;
-    width: 37px;
+    width: 45px;
     height: 42px;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
@@ -233,8 +247,8 @@ a:focus {
 
 .custom_nav-container .navbar-toggler span {
     display: block;
-    width: 35px;
-    height: 4px;
+    width: 45px;
+    height: 5px;
     background-color: #ffffff;
     margin: 7px 0;
     -webkit-transition: all 0.3s;
@@ -251,14 +265,14 @@ a:focus {
     height: 100%;
     width: 100%;
     background-color: #ffffff;
-    top: -10px;
+    top: -15px;
     border-radius: 5px;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
 }
 
 .custom_nav-container .navbar-toggler span::after {
-    top: 10px;
+    top: 15px;
 }
 
 .custom_nav-container .navbar-toggler[aria-expanded="true"] {
@@ -474,7 +488,7 @@ a:focus {
     border-radius: 15px;
     overflow: hidden;
     background: linear-gradient(to bottom, #f1f2f3 25px, #222831 25px);
-    height: 520px;
+    height: 670px;
 }
 
 .food_section .box .img-box {
@@ -731,6 +745,7 @@ a:focus {
     font-size: 15px;
     padding: 12px;
 }
+
 .quantity-button {
     border: none;
     outline: none;
@@ -749,12 +764,171 @@ a:focus {
     margin: 0;
 }
 
+.sector-inner {
+    margin: 0 auto;
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.top {
+    width: 100%;
+    height: 80%;
+    display: flex;
+}
+
+.bottom {
+    width: 80%;
+    margin: 20px auto;
+    border-radius: 30px;
+    height: 30%;
+    background-color: #ffffff;
+    box-shadow: 1px 1px 2px #8080807d;
+    padding: 10px;
+    text-align: center;
+}
+
+.left {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Две колонки */
+    grid-auto-rows: 1fr; /* Автоматические строки */
+    grid-gap: 30px; /* Расстояние между блоками */
+}
+
+.right {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.block {
+    width: 100%; /* 100% ширины блоков внутри левого и правого блока */
+    min-height: 60%;
+    background-color: white;
+    margin: auto;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 1px 1px 2px #8080807d;
+    padding: 20px;
+}
+
+.block_5 {
+    background-color: #222831;
+    color: #ffbe33;
+    width: 40%;
+    min-height: 80%;
+    margin: auto;
+    border-radius: 30px;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 1px 1px 2px #8080807d;
+}
+
+.block_6 {
+    background-color: #222831;
+    color: #ffbe33;
+    width: 40%;
+    min-height: 80%;
+    margin: auto;
+    border-radius: 30px;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 1px 1px 2px #8080807d;
+}
+
 .quantity {
     -moz-appearance: textfield;
     appearance: textfield;
     width: 40px;
     text-align: center;
 
+}
+
+.main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cards_item {
+    display: flex;
+    padding: 1rem;
+}
+
+.card_image {
+    height: calc(13 * 1.2rem);
+    padding: 1.2rem 1.2rem 0;
+    position: relative;
+}
+
+.card_image:before,
+.card_image:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    left: 60%;
+    top: 0;
+    height: 45px;
+    background: #e6e6e6b8;
+    transform: rotate(45deg);
+}
+
+.card_image:after {
+    transform: rotate(-45deg);
+    top: auto;
+    bottom: -22px;
+    left: 40%;
+}
+
+.card_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cards_item {
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.25));
+}
+
+
+.card {
+    background-color: white;
+    border-radius: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-left: 30px;
+    background: repeating-linear-gradient(#0000 0 calc(1.2rem - 1px), rgba(102, 175, 225, 0.23) 0 1.2rem) right bottom /100% 100%, linear-gradient(rgba(255, 0, 0, 0.6) 0 0) 30px 0/2px 100% rgba(255, 255, 255, 0.6);
+    background-repeat: no-repeat;
+    line-height: 1.2rem;
+    -webkit-mask: radial-gradient(circle .8rem at 2px 50%, #0000 98%, #000) 0 0/100% 2.4rem;
+}
+
+.card_content {
+    padding: 1.2rem;
+}
+
+h2.card_title, p {
+    margin: 1.2rem 0;
+}
+
+h2.card_title {
+    font-size: 1.3em;
+}
+
+.card_text {
+    font-weight: 530;
 }
 
 @media (max-width: 767px) {
@@ -772,7 +946,7 @@ a:focus {
 }
 
 @media (max-width: 991px) {
-     .product-quantity {
+    .product-quantity {
         display: flex;
         justify-content: space-between;
     }
@@ -783,10 +957,12 @@ a:focus {
         height: auto;
         font-size: 35px;
     }
+
     .quantity {
         width: 65px;
         font-size: 25px;
     }
+
     /*footer_for tele*/
     .footer_section h4 {
         font-size: 40px;
@@ -825,8 +1001,8 @@ a:focus {
     }
 
     .food_section .box .options a {
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
     }
 
     li {
@@ -834,8 +1010,8 @@ a:focus {
     }
 
     .cart_img_catalog {
-        width: 45px;
-        height: 45px;
+        width: 60px;
+        height: 60px;
     }
 
     h5, .h5 {
@@ -872,7 +1048,7 @@ a:focus {
     }
 
     li {
-        font-size: 22px;
+        font-size: 32px;
     }
 
     h2, .h2 {
@@ -912,4 +1088,105 @@ a:focus {
     .count_numb {
         font-size: 24px;
     }
+
+    .cart_img_catalog {
+        width: 60px;
+        height: 60px;
+    }
+
+    .row-flex {
+        flex-wrap: wrap; /* Устанавливаем перенос на новую строку */
+    }
+
+    .product {
+        flex-basis: 100%; /* Карточки на 100% ширины экрана */
+        margin-right: 0; /* Убираем отступы между карточками */
+        margin-bottom: 20px; /* Добавляем отступ снизу между карточками */
+    }
+
+    .container {
+        max-width: 95%;
+    }
+
+    .food_section .box {
+
+        height: 1020px;
+    }
+
+    .food_section .box .img-box {
+
+        height: 835px;
+    }
+
+    .food_section .box .img-box img {
+
+        max-height: 825px;
+    }
+
+    .food_section .box {
+
+        height: 1150px;
+    }
+
+
+    .options {
+
+        top: 92%;
+    }
+
+    .about_section .detail-box a {
+        padding: 10px 5px;
+        height: 70px;
+        width: 230px;
+        text-align: center;
+        font-size: 25px;
+    }
+
+    .section_about_inform {
+
+        height: 1400px;
+    }
+
+    .sector-inner {
+        flex-direction: column;
+        width: 80%;
+    }
+
+    .top {
+        flex-direction: column;
+    }
+
+    .block {
+        width: 94%;
+        height: 65%;
+        margin: 20px auto;
+        font-size: 25px;
+    }
+
+    .block_5 {
+        width: 48%;
+        font-size: 27px;
+    }
+
+    .block_6 {
+        width: 48%;
+        font-size: 27px;
+    }
+
+    .bottom {
+        height: 12%;
+        font-size: 25px;
+    }
+
+    .cards {
+        grid-template-columns: none;
+        grid-template-rows: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    .card_image {
+height: calc(20*1.2rem);
+}
+.card_text {
+min-height: 300px;
+line-height: 1.5;
+}
 }

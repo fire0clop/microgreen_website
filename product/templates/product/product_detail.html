@@ -103,7 +103,7 @@
 <section class="food_section layout_padding">
     <div class="heading_container heading_center">
         <h2>
-            Наш каталог
+            {{ product.name }}
         </h2>
     </div>
     <br><br>
@@ -232,7 +232,7 @@
                         Microgreen
                     </a>
                     <p>
-                        Какое-нибудь описание для компании
+                        Мы выращиваем и предлагаем широкий ассортимент микрозелени и ярких цветков, чтобы обогатить ваши блюда вкусом, ароматом и эстетикой
                     </p>
                     <div class="footer_social">
                         <a href="">
@@ -269,18 +269,55 @@
     </div>
 </footer>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const mainImage = document.getElementById('mainImage');
-        const smallImages = document.querySelectorAll('.small-image');
+document.addEventListener('DOMContentLoaded', function () {
+    const mainImage = document.getElementById('mainImage');
+    const smallImages = document.querySelectorAll('.small-image');
+    let currentIndex = 0; // Текущий индекс отображаемой маленькой картинки
 
-        smallImages.forEach(function (smallImage) {
-            smallImage.addEventListener('click', function () {
-                const newMainImageSrc = smallImage.getAttribute('data-main-image');
-                mainImage.setAttribute('src', newMainImageSrc);
-            });
+    smallImages.forEach(function (smallImage, index) {
+        smallImage.addEventListener('click', function () {
+            const newMainImageSrc = smallImage.getAttribute('data-main-image');
+            mainImage.setAttribute('src', newMainImageSrc);
+            currentIndex = index; // Обновляем текущий индекс
         });
     });
+
+    // Инициализируем Hammer.js для обработки жестов
+    const hammer = new Hammer(mainImage, { touchAction: 'auto' });
+
+    // Обработчик смахивания влево
+    hammer.on('swipeleft', function () {
+        if (currentIndex < smallImages.length - 1) {
+            currentIndex++;
+            const newMainImageSrc = smallImages[currentIndex].getAttribute('data-main-image');
+            mainImage.setAttribute('src', newMainImageSrc);
+        }
+    });
+
+    // Обработчик смахивания вправо
+    hammer.on('swiperight', function () {
+        if (currentIndex > 0) {
+            currentIndex--;
+            const newMainImageSrc = smallImages[currentIndex].getAttribute('data-main-image');
+            mainImage.setAttribute('src', newMainImageSrc);
+        }
+    });
+});
 </script>
+
+{#<script>#}
+{#    document.addEventListener('DOMContentLoaded', function () {#}
+{#        const mainImage = document.getElementById('mainImage');#}
+{#        const smallImages = document.querySelectorAll('.small-image');#}
+{##}
+{#        smallImages.forEach(function (smallImage) {#}
+{#            smallImage.addEventListener('click', function () {#}
+{#                const newMainImageSrc = smallImage.getAttribute('data-main-image');#}
+{#                mainImage.setAttribute('src', newMainImageSrc);#}
+{#            });#}
+{#        });#}
+{#    });#}
+{#</script>#}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var autoHideMessages = document.querySelectorAll('.auto-hide');
@@ -375,5 +412,8 @@ for (var i = 0; i < removeFromCartButtons.length; i++) {
 </script>
 <script src="{% static 'product/js/jquery-3.4.1.min.js' %}"></script>
 <script src="{% static 'product/js/bootstrap.js' %}"></script>
+<!-- Подключение Hammer.js через CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+
 </body>
 </html>

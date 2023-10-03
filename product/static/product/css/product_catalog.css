@@ -136,9 +136,7 @@ a:focus {
     padding: 0;
 }
 
-.custom_nav-container .navbar-nav {
-    padding-left: 18%;
-}
+
 
 .custom_nav-container .navbar-nav .nav-item .nav-link {
     padding: 5px 20px;
@@ -161,11 +159,11 @@ a:focus {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
 }
 
 .user_option a {
-    margin: 0 10px;
+    margin: 5px 15px;
 }
 
 .user_option .user_link {
@@ -196,7 +194,7 @@ a:focus {
 
 .custom_nav-container .navbar-toggler {
     padding: 0;
-    width: 37px;
+    width: 45px;
     height: 42px;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
@@ -204,8 +202,8 @@ a:focus {
 
 .custom_nav-container .navbar-toggler span {
     display: block;
-    width: 35px;
-    height: 4px;
+    width: 45px;
+    height: 5px;
     background-color: #ffffff;
     margin: 7px 0;
     -webkit-transition: all 0.3s;
@@ -222,14 +220,14 @@ a:focus {
     height: 100%;
     width: 100%;
     background-color: #ffffff;
-    top: -10px;
+    top: -15px;
     border-radius: 5px;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
 }
 
 .custom_nav-container .navbar-toggler span::after {
-    top: 10px;
+    top: 15px;
 }
 
 .custom_nav-container .navbar-toggler[aria-expanded="true"] {
@@ -285,7 +283,7 @@ a:focus {
     border-radius: 15px;
     overflow: hidden;
     background: linear-gradient(to bottom, #f1f2f3 25px, #222831 25px);
-    height: 520px;
+    height: 650px;
 }
 
 .food_section .box .img-box {
@@ -379,6 +377,14 @@ a:focus {
     color: #ffffff;
     padding: 75px 0 40px 0;
     text-align: center;
+
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Разрешить перенос элементов на новую строку, если не помещаются */
+    justify-content: space-between; /* Равномерно распределить элементы по горизонтали */
+    align-items: flex-start; /* Выравнивание элементов по вертикали (по верхнему краю) */
 }
 
 .footer_section h4 {
@@ -428,6 +434,22 @@ a:focus {
     font-size: 38px;
     line-height: 1;
     color: #ffffff;
+}
+
+.row-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Равномерно распределять элементы по ширине */
+}
+
+.product {
+    flex-basis: calc(33.33% - 20px); /* Ширина карточки продукта с учетом отступов между ними */
+    margin-right: 10px; /* Отступ между карточками */
+}
+
+/* Удалите отступ справа для последней карточки */
+.product:last-child {
+    margin-right: 0;
 }
 
 .footer_section .footer_social {
@@ -536,6 +558,7 @@ a:focus {
         height: auto;
         font-size: 35px;
     }
+
     .quantity {
         width: 65px;
         font-size: 25px;
@@ -578,8 +601,8 @@ a:focus {
     }
 
     .food_section .box .options a {
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
     }
 
     h5, .h5 {
@@ -617,11 +640,52 @@ a:focus {
     }
 
     li {
-        font-size: 27px;
+        font-size: 32px;
     }
 
     .cart_img_catalog {
-        width: 45px;
-        height: 45px;
+        width: 60px;
+        height: 60px;
     }
+
+    .row-flex {
+        flex-wrap: wrap; /* Устанавливаем перенос на новую строку */
+    }
+
+    .product {
+        flex-basis: 100%; /* Карточки на 100% ширины экрана */
+        margin-right: 0; /* Убираем отступы между карточками */
+        margin-bottom: 20px; /* Добавляем отступ снизу между карточками */
+    }
+
+    .container {
+        max-width: 95%;
+    }
+
+    .food_section .box {
+
+        height: 1020px;
+    }
+
+    .food_section .box .img-box {
+
+        height: 835px;
+    }
+
+    .food_section .box .img-box img {
+
+        max-height: 825px;
+    }
+
+    .food_section .box {
+
+        height: 1150px;
+    }
+
+
+    .options {
+
+        top: 92%;
+    }
+
 }
