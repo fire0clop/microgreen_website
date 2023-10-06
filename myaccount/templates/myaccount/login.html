@@ -13,25 +13,26 @@
     <div class="title">
         Форма входа
     </div>
-    <form method="post">
-        {% csrf_token %}
-        <div class="field">
-            <input type="text" id="id_username" name="username" required>
-            <label>Введите почту</label>
-        </div>
-        <div class="field">
-            <input type="password" id="id_password" name="password" required>
-            <label>Пароль</label>
-        </div>
-        <div class="field">
-            <input type="submit" value="Вход">
-        </div>
-        <div class="signup-link">
-            Нет аккаунта?
-            <br>
-            <a href="{% url 'user_create' %}">Зарегистрируйтесь здесь</a>
-        </div>
-    </form>
+<form method="post">
+    {% csrf_token %}
+    <div class="field">
+        <input type="text" id="id_username" name="username" required value="+7">
+        <label>Введите номер телефона</label>
+    </div>
+    <div class="field">
+        <input type="password" id="id_password" name="password" required>
+        <label>Пароль</label>
+    </div>
+    <div class="field">
+        <input type="submit" value="Вход">
+    </div>
+    <div class="signup-link">
+        Нет аккаунта?
+        <br>
+        <a href="{% url 'user_create' %}">Зарегистрируйтесь здесь</a>
+    </div>
+</form>
+
 </div>
 </body>
 </html>

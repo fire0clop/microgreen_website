@@ -1,15 +1,13 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import User
-
+from django.utils.translation import gettext as _
 
 class UserRegisterForm(UserCreationForm):
     company_name = forms.CharField(max_length=100)
     phone = forms.CharField(
         max_length=12,
         min_length=12,
-        validators=[MinLengthValidator(limit_value=12, message="Номер телефона введен не правильно")]
     )
 
     def __init__(self, *args, **kwargs):
@@ -18,17 +16,19 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'company_name', 'phone', 'password1', 'password2']
+        fields = ['phone', 'company_name', 'password1', 'password2']
 
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        try:
-            User.objects.get(username=username)
-            raise forms.ValidationError('Введенная почта уже зарегистрирована')
-        except User.DoesNotExist:
-            return username
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        if User.objects.filter(username=phone).exists():
+            raise forms.ValidationError('Пользователь с таким номером телефона уже зарегистрирован')
+        return phone
 
-
+    error_messages = {
+        'password_mismatch': _('Пароли не совпадают'),
+        'password_too_short': _('Пароль слишком короткий. Минимальная длина пароля - 6 символов.'),
+        'password_entirely_numeric': _('Пароль не может состоять только из цифр.'),
+    }
 
 
 class ChangeOrderStatusForm(forms.Form):

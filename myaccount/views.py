@@ -11,6 +11,7 @@ from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.hashers import check_password
 
 def mainlog(request):
     return render(request, 'myaccount/base.html')
@@ -19,6 +20,25 @@ class UserListView(ListView):
     model = User
     template_name = 'myaccount/list_acc.html'
     context_object_name = 'users'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Получите список всех пользователей
+        users = User.objects.all()
+
+        # Дешифруйте пароли пользователей и добавьте их в контекст
+        decrypted_passwords = []
+        for user in users:
+            # Здесь можно указать ваш пароль, который вы хотите дешифровать
+            password_to_decrypt = 'пароль_пользователя'
+            if check_password(password_to_decrypt, user.password):
+                decrypted_passwords.append((user, password_to_decrypt))
+            else:
+                decrypted_passwords.append((user, 'Пароль не совпадает'))
+
+        context['decrypted_passwords'] = decrypted_passwords
+        return context
 @method_decorator(staff_member_required, name='dispatch')
 class UserDeleteView(DeleteView):
     model = User
@@ -28,10 +48,13 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
             phone = form.cleaned_data.get('phone')
-            company_name = form.cleaned_data.get('company_name')
-            Profile.objects.create(user=user, phone=phone, company_name=company_name)
+            user = form.save(commit=False)  # Создайте пользователя, но не сохраняйте его в базе данных пока не добавите номер телефона в профиль
+            user.username = phone  # Измените логин на значение телефона
+            user.save()
+
+            # Теперь создайте профиль и свяжите его с пользователем
+            profile = Profile.objects.create(user=user, phone=phone, company_name=form.cleaned_data.get('company_name'))
 
             # Автоматически входим пользователя после успешной регистрации
             login(request, user)
@@ -46,6 +69,7 @@ def register(request):
         form = UserRegisterForm()
 
     return render(request, 'myaccount/user_create.html', {'form': form})
+
 @method_decorator(staff_member_required, name='dispatch')
 class DetailsUserView(DetailView):
     template_name = 'myaccount/user_detail.html'
@@ -57,6 +81,9 @@ class UpdateUserView(UpdateView):
     model = Profile
     fields = ['email', 'phone']
     success_url = reverse_lazy('user_list')
+
+
+
 class MyLoginView(LoginView):
     redirect_authenticated_user = True
     template_name = 'myaccount/login.html'  # Ваш шаблон для входа
