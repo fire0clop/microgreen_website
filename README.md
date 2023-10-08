@@ -10,3 +10,9 @@ Using this information, production volumes for the following periods will be cal
 Accounting will also be connected there, namely work with 1C and much more. 
 In essence, this store is one of the links that the company will completely control.
 When I finish at least a small part of the skeleton, I will post this project too.
+<img width="1901" alt="catalog" src="https://github.com/fire0clop/microgreen_website/assets/142446696/02f6b77a-01ff-4f2a-b1ff-2b06dfd7c5fc">
+<img width="1917" alt="registration" src="https://github.com/fire0clop/microgreen_website/assets/142446696/8f859e7c-3259-413f-b5ef-9b247ba7f6a4">
+<img width="1916" alt="login" src="https://github.com/fire0clop/microgreen_website/assets/142446696/107807fa-8b58-4aa6-a1a7-8bf802e9750e">
+<img width="1915" alt="personal" src="https://github.com/fire0clop/microgreen_website/assets/142446696/530ef9dd-2bb5-44f3-851c-fa831b8e5cd1">
+<img width="1918" alt="cart" src="https://github.com/fire0clop/microgreen_website/assets/142446696/c118357e-1403-4749-809d-db6c2bf4ebd8">
+<img width="1907" alt="order" src="https://github.com/fire0clop/microgreen_website/assets/142446696/8b445e92-00e5-4464-9178-7fbd063b0fd6">
